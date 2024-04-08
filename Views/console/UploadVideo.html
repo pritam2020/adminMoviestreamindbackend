@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            height: 1000px;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* Hide horizontal scrollbar */
+        }
+
+        .menu {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            transition: 0.5s;
+            /* Add smooth transition effect */
+            padding-top: 60px;
+            z-index: 1;
+        }
+
+        #menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #030303;
+            display: block;
+            transition: 0.3s;
+            /* Add smooth transition effect */
+        }
+
+        #menu a:hover {
+            background-color: #555;
+        }
+
+        .open-menu {
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #d8d8d8;
+            transition: 0.5s;
+            /* Add smooth transition effect */
+            padding-top: 60px;
+            z-index: 1;
+        }
+
+        #main-content {
+            transition: margin-left 0.5s;
+            /* Add smooth transition effect */
+            padding: 16px;
+        }
+
+        .menu-btn {
+            cursor: pointer;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 2;
+            font-size: 30px;
+            color: #070707;
+        }
+
+        .menu-btn:hover {
+            color: #ccc;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--this is the menu-->
+    <div id="menu" class="menu">
+        <a href="http://192.168.29.245:3002/protected-route/views/videogallery.html">Movie Gallery</a>
+        <a href="http://192.168.29.245:3002/protected-route/views/UploadVideo.html">UploadVideo</a>
+        <a href="http://192.168.29.245:3002/protected-route/logout">logout</a>
+    </div>
+     <div id="main-content">
+        <span class="menu-btn" onclick="toggleMenu()">&#9776;</span>
+    </div>
+    <!--this is the menu-->
+
+
+
+
+    <!--this is the the Upload Button-->
+
+    <h2>Upload a Video</h2>
+    <form action="/protected-route/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" id="video" accept="video/*" multiple/>
+        <button type="submit">Upload</button>
+    </form>
+
+    <!--this is the the Upload Button-->
+
+
+
+
+
+
+    <script>
+        // function for the menu button toggle
+        function toggleMenu() {
+            var menu = document.getElementsByClassName("menu")[0]; // Access the first element
+            var mainContent = document.getElementById("main-content");
+            if (menu.classList.contains("open-menu")) {
+                menu.classList.remove("open-menu");
+                mainContent.style.marginLeft = "0";
+            } else {
+                menu.classList.add("open-menu");
+                mainContent.style.marginLeft = "250px";
+            }
+        }
+        // function for the menu button toggle
+    </script>
+</body>
+
+</html>

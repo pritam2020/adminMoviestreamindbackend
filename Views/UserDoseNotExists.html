@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Message</title>
+</head>
+<body>
+    <div id="error-container"></div>
+
+    <script>
+        const errorContainer = document.getElementById('error-container');
+
+        // CSS styles embedded inside script tag
+        const styles = `
+            #error-container {
+                font-family: Arial, sans-serif;
+                background-color: #f8d7da;
+                color: #721c24;
+                padding: 10px 20px;
+                border: 1px solid #f5c6cb;
+                border-radius: 5px;
+                margin: 20px;
+            }
+        `;
+
+        // Create a style element and append it to the document's head
+        const styleElement = document.createElement('style');
+        styleElement.textContent = styles;
+        document.head.appendChild(styleElement);
+
+        // Display error message inside the error container
+        errorContainer.textContent = 'Error: User does not exist';
+    </script>
+</body>
+</html>
