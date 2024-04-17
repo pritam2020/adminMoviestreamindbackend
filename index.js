@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 app.post('/adminlogin', bodyParser.urlencoded({ extended: true }), adminAuthenticate, (req, res) => {
   console.log('success');
   //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
-  res.redirect('http://192.168.29.245:3002/protected-route/views/VideoGallery.html');
+  res.redirect('http://localhost:3002/protected-route/views/VideoGallery.html');
 })
 
 
@@ -118,7 +118,7 @@ app.get('/protected-route/deletemovie', (req, res) => {
     }
     )
     //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
-  res.redirect('http://192.168.29.245:3002/protected-route/views/videogallery.html');
+  res.redirect('http://localhost:3002/protected-route/views/videogallery.html');
   });
 })
 
@@ -131,7 +131,7 @@ app.get('/protected-route/deletemovie', (req, res) => {
 app.get('/protected-route/logout', (req, res) => { 
   req.session.user.username="";
   
-  req.session.destroy((err) => { if (err) { console.log(err); res.status(500).send('Error logging out'); } else { console.log('logged out successfully'); res.redirect('http://192.168.29.245:3002/') } }) 
+  req.session.destroy((err) => { if (err) { console.log(err); res.status(500).send('Error logging out'); } else { console.log('logged out successfully'); res.redirect('http://localhost:3002/') } }) 
 });
 
 // app.get('/videogallery/video',(req,res)=>{
