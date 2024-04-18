@@ -112,9 +112,9 @@
 <body>
     <!--this is the menu-->
     <div id="menu" class="menu">
-        <a href="http://192.168.29.245:3002/protected-route/views/videogallery.html">Movie Gallery</a>
-        <a href="http://192.168.29.245:3002/protected-route/views/UploadVideo.html">UploadVideo</a>
-        <a href="http://192.168.29.245:3002/protected-route/logout">logout</a>
+        <a href="http://localhost:3002/protected-route/views/videogallery.html">Movie Gallery</a>
+        <a href="http://localhost:3002/protected-route/views/UploadVideo.html">UploadVideo</a>
+        <a href="http://localhost:3002/protected-route/logout">logout</a>
     </div>
 
     <div id="main-content">
@@ -144,7 +144,7 @@
     <script>
 
         // dynamically creating video element and populating it 
-        fetch('http://192.168.29.245:3002/protected-route/videodetails').then(response => {
+        fetch('http://localhost:3002/protected-route/videodetails').then(response => {
             console.log("VideoGallery---line 43...");
             if (!response.ok) {
                 console.log("VideoGallery---line 44...");
@@ -177,7 +177,7 @@
                     var sourceElement = document.createElement('source');
 
                     // Set attributes for the source element
-                    sourceElement.src = `http://192.168.29.245:3002/protected-route/videos/${element.MovieName}.mp4`;
+                    sourceElement.src = `http://localhost:3002/protected-route/videos/${element.MovieName}.mp4`;
                     sourceElement.type = 'video/mp4';
                     console.log("Video name: " + element.MovieName)
 
@@ -210,7 +210,7 @@
                         li.style.marginRight = '10px';
 
                         var link = document.createElement('a');
-                        link.href = `http://192.168.29.245:3002/protected-route/deletemovie?MovieID=${element.MovieID}&MovieName=${element.MovieName}`;
+                        link.href = `http://localhost:3002/protected-route/deletemovie?MovieID=${element.MovieID}&MovieName=${element.MovieName}`;
                         console.log(`sending from client to delete ${element.MovieID}...`)
                         
                         link.style.color = 'white';
@@ -220,7 +220,7 @@
                         var DeleteImage= document.createElement('img');
                         DeleteImage.style.width='18px';
                         DeleteImage.style.height='18px';
-                        DeleteImage.src="http://192.168.29.245:3002/protected-route/images/delete.png"
+                        DeleteImage.src="http://localhost:3002/protected-route/images/delete.png"
                         
                         link.appendChild(DeleteImage);
                         li.appendChild(link);
