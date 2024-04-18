@@ -23,9 +23,9 @@ const storage = multer.diskStorage({
 
 const destnitation = multer({ storage: storage })
 const connection = mysql.createConnection({
-  host: '192.168.29.245',
+  host: '192.168.0.104',
   port: 3306,
-  user: 'root',
+  user: 'adm',
   password: 'Unique@18',
   database: 'moviestreaming'
 });
@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 app.post('/adminlogin', bodyParser.urlencoded({ extended: true }), adminAuthenticate, (req, res) => {
   console.log('success');
   //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
-  res.redirect('http://localhost:3002/protected-route/views/VideoGallery.html');
+  res.redirect('http://192.168.0.104:3002/protected-route/views/VideoGallery.html');
 })
 
 
