@@ -5,3 +5,4 @@ create table moviedetails(MovieID varchar(10) PRIMARY KEY,MovieName varchar(150)
 
 line 1;
 line 2;
+line 3;
