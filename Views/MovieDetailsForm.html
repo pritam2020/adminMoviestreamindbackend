@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Movie Details Form</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                margin: 0;
+                padding: 20px;
+            }
+        
+            h2 {
+                margin-bottom: 30px;
+                color: #333;
+                text-align: center;
+            }
+        
+            form {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+        
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+                font-weight: bold;
+            }
+        
+            input[type="text"],
+            input[type="range"],
+            textarea,
+            select {
+                width: calc(100% - 16px);
+                padding: 12px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+        
+            input[type="date"] {
+                width: calc(100% - 20px);
+            }
+        
+            button {
+                padding: 8px 16px;
+                background-color: #2196F3;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+        
+            button:hover {
+                background-color: #0b7dda;
+            }
+        
+            button.remove {
+                background-color: #f44336 !important;
+            }
+
+            button.remove:hover{
+                background-color: #d21b0e !important;
+            }
+        
+            fieldset {
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+        
+            legend {
+                font-weight: bold;
+                color: #333;
+            }
+        
+            
+        
+            .secondary-color {
+                color: #2196F3;
+            }
+            
+
+            .genre-grid {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .genre-grid input[type="checkbox"] {
+                display: none;
+            }
+
+            .genre-label {
+                display: inline-block;
+                padding: 8px 16px;
+                margin: 5px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .genre-label:hover {
+                background-color: #ddd;
+            }
+
+            .genre-grid input[type="checkbox"]:checked + .genre-label {
+                background-color: #2196F3;
+                color: #fff;
+            }
+            input[type="submit"] {
+                padding: 12px 24px;
+                background-color: #2196F3;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #0b7dda;
+            }
+             /* Style for the container */
+            .upload-container {
+                margin-bottom: 20px;
+            }
+
+            /* Style for the label */
+            .upload-label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            /* Style for the file input */
+            .upload-input {
+                display: none; /* Hide the default file input */
+            }
+
+            /* Style for the custom button */
+            .upload-button {
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: #2196F3;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            /* Style for the custom button on hover */
+            .upload-button:hover {
+                background-color: #0b7dda;
+            }
+            .image-preview {
+            margin-top: 10px;
+            max-width: 100%;
+            height: auto;
+            display: none; /* Hide the preview by default */
+        }
+        .remove-button {
+            display: block;
+            margin-top: 5px;
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
+        /* Style for the remove button on hover */
+        .remove-button:hover {
+            background-color: #d21b0e;
+        }
+
+
+        </style>
+        </head>
+<body>
+
+<h2>Movie Details</h2>
+
+<form action="/action_page.php">
+<div>
+    <label for="mname">Movie</label>
+    <input type="text" id="mname" name="mname" value="John"><br>
+</div>
+
+<br>
+
+<div>
+    <fieldset>
+        <legend>Directors</legend>
+        <label for="dname"></label>
+        <input type="text" id="dname" name="dname" value="Doe"><span> </span><button type="button" id="addButton" onClick="addTextBox(this)">Add</button>
+    </fieldset>   
+</div>
+
+<br>
+
+<div>
+    <fieldset>
+        <legend>Cast Names</legend>
+        <label for="cname"></label>
+        <input type="text" id="cname" name="cname" value="Doe"><span> </span><button type="button" id="addButton" onClick="addTextBox(this)">Add</button>
+    </fieldset>
+</div>
+
+<br>
+
+<div>
+    <fieldset>
+        <legend>IMDB Rating</legend>
+        <label for="rating"></label>
+        <input type="range" id="rating" name="rating" min="0" max="10" value=0 step="0.1">
+        <span id="ratingValue">0</span>
+    </fieldset>
+</div>
+
+<br>
+
+<div>
+  <fieldset>
+    <legend>Genre:</legend>
+    <div class="genre-grid">
+        <input type="checkbox" id="Action" name="genre" ><label for="Action" class="genre-label">Action</label>
+        <input type="checkbox" id="Drama" name="genre" ><label for="Drama" class="genre-label">Drama</label>
+        <input type="checkbox" id="Sci-fi" name="genre" ><label for="Sci-fi" class="genre-label">Sci-fi</label>
+        <input type="checkbox" id="Romance" name="genre" ><label for="Romance" class="genre-label">Romance</label>
+        <input type="checkbox" id="Comedy" name="genre" ><label for="Comedy" class="genre-label">Comedy</label>
+        <input type="checkbox" id="Fantasy" name="genre" ><label for="Fantasy" class="genre-label">Fantasy</label>
+        <input type="checkbox" id="Adventure" name="genre" ><label for="Adventure" class="genre-label">Adventure</label>
+        <input type="checkbox" id="Biography" name="genre" ><label for="Biography" class="genre-label">Biography</label>
+        <input type="checkbox" id="Documentary" name="genre" ><label for="Documentary" class="genre-label">Documentary</label>
+        <input type="checkbox" id="Horror" name="genre" ><label for="Horror" class="genre-label">Horror</label>
+        <input type="checkbox" id="Thriller" name="genre" ><label for="Thriller" class="genre-label">Thriller</label>
+        <input type="checkbox" id="Mystery" name="genre" ><label for="Mystery" class="genre-label">Mystery</label>
+        <input type="checkbox" id="War" name="genre" ><label for="War" class="genre-label">War</label>
+        <input type="checkbox" id="Award-winning" name="genre" ><label for="Award-winning" class="genre-label">Award-winning</label>
+    </div>
+  </fieldset>
+</div>
+
+<br>
+  
+  <label for="despription">Description:</label><br>
+  <textarea name="description" rows=7 cols=120 placeholder="enter the description about the movie here"></textarea><br>
+  <label for="rdate">release date:</label><br>
+  <input type="date" id="rdate" name="rdate" value="Doe"><br><br>
+  
+<div>
+  <fieldset>
+  <legend>Language:</legend>
+  <input type="radio" id="English" name="language" value="English"><lable for="English">English</lable>
+  <input type="radio" id="Hindi" name="language" value="Hindi"><lable for="Hindi">Hindi</lable>
+  <input type="radio" id="Bengali" name="language" value="Bengali"><lable for="Bengali">Bengali</lable>
+  </fieldset>
+</div>
+
+<br>
+
+<div>
+  <fieldset>
+  <legend>Original-language:</legend>
+  <input type="radio" id="English" name="Olanguage" value="English"><lable for="English">English</lable>
+  <input type="radio" id="Hindi" name="Olanguage" value="Hindi"><lable for="Hindi">Hindi</lable>
+  <input type="radio" id="Bengali" name="Olanguage" value="Bengali"><lable for="Bengali">Bengali</lable>
+  </fieldset>
+</div>
+
+<br>
+
+<div class="upload-container">
+    <label for="Thumbnail" class="upload-label">Upload a Thumbnail</label>
+    <input type="file" id="Thumbnail" name="Thumbnail" class="upload-input" onchange="previewImage(event)">
+    <button class="upload-button" onclick="triggerFileInput(event)">Choose File</button>
+    <img id="preview" class="image-preview" src="#" alt="Preview">
+    <button type="button" class="remove-button" onclick="removePreview()">Remove</button>
+</div>
+
+<br>
+
+<input type="submit" value="Submit">
+</form> 
+
+<script>
+  var count =0;
+
+  var rangeInput = document.getElementById('rating');
+  var rangeValue = document.getElementById('ratingValue');
+  rangeInput.addEventListener('input', function() {
+    rangeValue.textContent = rangeInput.value;
+  });
+  
+
+  function addTextBox(currentNode) {
+        console.log(currentNode);
+        var newInput = document.createElement('input');
+        newInput.type = 'text';
+        
+        var div = document.createElement('div');
+        var remove = document.createElement('button');
+        var span = document.createElement('span');
+        var br = document.createElement('br');
+        
+        remove.textContent="Remove";
+        remove.classList.add("remove");
+        remove.onclick=function(){removeTextBox(remove)};
+        span.textContent=" ";
+        
+        div.appendChild(br);
+        div.appendChild(newInput);
+        div.appendChild(span);
+        div.appendChild(remove);
+        
+        currentNode.parentNode.appendChild(div);
+        // document.getElementById(container).appendChild(document.createElement('br'));
+}
+
+function removeTextBox(removeNode) {
+        console.log(removeNode);
+        var PNode=removeNode.parentNode;
+        PNode.parentNode.removeChild(PNode);
+        
+}
+
+function triggerFileInput(event) {
+            event.preventDefault(); // Prevent default behavior (form submission)
+            document.getElementById('Thumbnail').click(); // Trigger file input click
+        }
+
+
+
+function previewImage(event) {
+            var input = event.target;
+            var preview = document.getElementById('preview');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block'; // Show the preview
+                }
+
+                reader.readAsDataURL(input.files[0]); // Read the selected file as a data URL
+            }
+        }
+
+function removePreview() {
+    var preview = document.getElementById('preview');
+    var fileInput = document.getElementById('Thumbnail');
+    preview.src = '#'; // Clear the image source
+    preview.style.display = 'none'; // Hide the preview
+    fileInput.value = ''; // Clear the file input
+        }
+</script>
+
+</body>
+</html>
+
