@@ -1,0 +1,287 @@
+body {
+    height: 1000px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    /* padding: 0; */
+    overflow-x: hidden;
+    background-color: #f0f0f0;
+    padding: 20px;
+
+}
+
+.menu {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 1;
+}
+
+#menu a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #030303;
+    display: block;
+    transition: 0.3s;
+
+}
+
+#menu a:hover {
+    background-color: #555;
+}
+
+.open-menu {
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #d8d8d8;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 1;
+}
+
+#main-content {
+    transition: margin-left 0.5s;
+    padding: 16px;
+}
+
+.menu-btn {
+    cursor: pointer;
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 2;
+    font-size: 30px;
+    color: #070707;
+}
+
+.menu-btn:hover {
+    color: #ccc;
+}
+
+.menu h2 {
+    text-align: center;
+    color: #333333;
+}
+
+h2 {
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="range"],
+textarea,
+select {
+    width: calc(100% - 16px);
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input[type="date"] {
+    width: calc(100% - 20px);
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0b7dda;
+}
+
+button.remove {
+    background-color: #f44336 !important;
+}
+
+button.remove:hover {
+    background-color: #d21b0e !important;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+.secondary-color {
+    color: #2196F3;
+}
+
+
+.genre-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.genre-grid input[type="checkbox"] {
+    display: none;
+}
+
+.genre-label {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.genre-label:hover {
+    background-color: #ddd;
+}
+
+.genre-grid input[type="checkbox"]:checked+.genre-label {
+    background-color: #2196F3;
+    color: #fff;
+}
+
+input[type="submit"] {
+    padding: 12px 24px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0b7dda;
+}
+
+/* Style for the container */
+.upload-container {
+    margin-bottom: 20px;
+}
+
+/* Style for the label */
+.upload-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Style for the file input */
+.upload-input {
+    display: none;
+    /* Hide the default file input */
+}
+
+/* Style for the custom button */
+.upload-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Style for the custom button on hover */
+.upload-button:hover {
+    background-color: #0b7dda;
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+    display: none;
+    /* Hide the preview by default */
+}
+
+.remove-button {
+    display: block;
+    margin-top: 5px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+
+/* Style for the remove button on hover */
+.remove-button:hover {
+    background-color: #d21b0e;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-input {
+    display: none;
+    /* Hide the original file input */
+}
+
+.file-label {
+    display: inline-block;
+    padding: 10px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file-label:hover {
+    background-color: #0b7dda;
+}
