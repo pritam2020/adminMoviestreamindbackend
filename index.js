@@ -74,12 +74,12 @@ app.use(
   }));
 app.use("/protected-route", (req, res, next) => {
   if (!req.session.user) {
-    console.log(req.session);
-    console.log("session..." + req.session.user + "\n\n");
+  //  console.log(req.session);
+  //  console.log("session..." + req.session.user + "\n\n");
     return res.status(401).end("You must be logged in to access this resource");
   }
-  console.log(req.session);
-  console.log("session..." + req.session.user.username + "\n\n");
+//  console.log(req.session);
+  //console.log("session..." + req.session.user.username + "\n\n");
   next();
 });
 app.use("/protected-route/views",express.static(path.join(__dirname, "Views", "console")));
@@ -99,6 +99,7 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
   fs.readFile("./Views/AdminLogin.html", (err, data) => {
     if (!err) {
+      console.log(process.env.SERVER);
       res.writeHead(200, { "Content-Type": "text/html" });
       res.end(data);
     } else console.log(err);
@@ -110,6 +111,7 @@ app.get("/", (req, res) => {
 
 app.post("/adminlogin",bodyParser.urlencoded({ extended: true }),adminAuthenticate,(req, res) => {
     console.log("success");
+    console.log(process.env.SERVER);
     //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
     res.redirect(
       `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/VideoGallery.html`
@@ -125,8 +127,15 @@ app.get("/protected-route/videodetails", (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      var tabs=result;
+      console.log("length of result..."+tabs.length);
+      console.log(tabs);
       console.log("result after fetching movie details..." + result);
-      res.end(JSON.stringify(result));
+      const data={
+        tabs:Math.ceil(result.length/50),
+        result:result
+      }
+      res.end(JSON.stringify(data));
     }
   });
 });
