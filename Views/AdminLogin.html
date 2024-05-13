@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-   
-    <style>body {
+
+    <style>
+      body {
         margin: 0;
         font-family: Arial, sans-serif;
         background-color: #f9f9f9;
@@ -13,42 +14,42 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-    }
-    
-    .login-container {
+      }
+
+      .login-container {
         width: 300px;
         padding: 30px;
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    h2 {
+      }
+
+      h2 {
         margin: 0 0 20px;
         color: #333;
         text-align: center;
-    }
-    
-    .form-group {
+      }
+
+      .form-group {
         margin-bottom: 20px;
-    }
-    
-    label {
+      }
+
+      label {
         display: block;
         margin-bottom: 5px;
         color: #666;
-    }
-    
-    input[type="text"],
-    input[type="password"] {
+      }
+
+      input[type="text"],
+      input[type="password"] {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         box-sizing: border-box;
-    }
-    
-    button {
+      }
+
+      button {
         width: 100%;
         padding: 10px;
         background-color: #007bff;
@@ -56,47 +57,52 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-    }
-    
-    button:hover {
+      }
+
+      button:hover {
         background-color: #0056b3;
-    }
+      }
     </style>
     <script>
-//         const mysql = require('mysql');
-//         const connection = mysql.createConnection({
-//             host: '172.17.0.1',
-//             user: 'root',
-//             password: 'Unique@18',
-//             database: 'moviestreaming'
-// });
+      //         const mysql = require('mysql');
+      //         const connection = mysql.createConnection({
+      //             host: '172.17.0.1',
+      //             user: 'root',
+      //             password: 'Unique@18',
+      //             database: 'moviestreaming'
+      // });
 
-//         function handelSubmit(Username,Password){
-//             const Username = document.getElementById('username-container').nodeVue();
-//             const Password = document.getElementById('password-container').nodeVue();
-//             connection.query(`SELECT * FROM admin where username=${Username} and Password=${Password}`, (error, results, fields) => {
-//             if (error) throw error;
-//             console.log(results);
-// });
+      //         function handelSubmit(Username,Password){
+      //             const Username = document.getElementById('username-container').nodeVue();
+      //             const Password = document.getElementById('password-container').nodeVue();
+      //             connection.query(`SELECT * FROM admin where username=${Username} and Password=${Password}`, (error, results, fields) => {
+      //             if (error) throw error;
+      //             console.log(results);
+      // });
 
-//         }
+      //         }
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="login-container">
-        <h2>Admin Login</h2>
-        <form action="http://glowing-acorn-grwr949wxwxcw75r-3002.app.github.dev/adminlogin" method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username-container" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password-container" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+      <h2>Admin Login</h2>
+      <form action="http://localhost:3002/adminlogin" method="post">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username-container" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password-container"
+            name="password"
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
     </div>
-</body>
+  </body>
 </html>

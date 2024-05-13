@@ -16,7 +16,17 @@ dotenv.config();
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Specify the destination directory where the uploaded file should be stored
-    cb(null, "./VideoGallery/"); // 'uploads/' is the destination directory in this example
+    console.log("in multer")
+    console.log(file);
+
+    if(file.fieldname=="video"){
+      cb(null, "./VideoGallery/");
+    }
+    else if(file.fieldname=="nail"){
+      cb(null, "./Thumbnails/");
+    }
+    
+     // 'uploads/' is the destination directory in this example
   },
   filename: function (req, file, cb) {
     // Generate a unique filename for the uploaded file
@@ -120,9 +130,9 @@ app.get("/protected-route/videodetails", (req, res) => {
       console.log(err);
     } else {
       var tabs = result;
-      console.log("length of result..." + tabs.length);
-      console.log(tabs);
-      console.log("result after fetching movie details..." + result);
+      // console.log("length of result..." + tabs.length);
+      // console.log(tabs);
+      // console.log("result after fetching movie details..." + result);
       const data = {
         tabs: Math.ceil(result.length / 50),
         result: result,
@@ -135,14 +145,17 @@ app.get("/protected-route/videodetails", (req, res) => {
 app.post(
   "/protected-route/Upload",
   bodyParser.urlencoded({ extended: true }),
-  MovieDestnitation.single("video"),
-  ThumbnailDestnitation.single("nail"),
+  MovieDestnitation.fields([
+    { name: "video", maxCount: 1 },
+    { name: "nail", maxCount: 1 }
+  ]),
+
   (req, res) => {
     console.log("file uploaded...");
     // console.log(req)
-    console.log(req.file.filename);
-    console.log(req.file.fieldname);
-    console.log(req.body);
+    console.log(req.file);
+    console.log(req.files);
+    // console.log(req.body);
     const description = "blahh blah blah..." + count;
     const MovieID = generateMovieID();
     var genre;
@@ -163,9 +176,9 @@ app.post(
     } else {
       cname = req.body.cname;
     }
-    console.log(genre);
-    console.log(cname);
-    console.log(dname);
+    // console.log(genre);
+    // console.log(cname);
+    // console.log(dname);
     var SqlQuery = "insert into moviedetails values (?,?,?,?,?,?,?,?,?,?)";
     //  const fileNames = req.files.map((file) => { file.originalname; connection.query(`insert into moviedetails values(${generateMovieID()},'${file.originalname}','${description + count++}')`, (err, result) => { if (!err) { res.sendFile(path.join(__dirname, 'Views', 'console', 'UploadVideo.html')); console.log("movie details uploadede is db..."); console.log(result); } else { console.log(err); } }); });
     //console.log('Uploaded file names:', fileNames);
@@ -174,15 +187,17 @@ app.post(
       SqlQuery,
       [
         MovieID,
-        req.file.originalname,
+        req.files.video[0].originalname,
         req.body.description,
         genre,
-        req.body.Olanguage,
-        dname,
-        cname,
-        req.body.rdate,
-        req.body.rating,
         req.body.language,
+        req.body.Olanguage,
+        req.body.rating,
+        cname,
+        dname,
+        req.body.rdate,
+        
+       
       ],
       (err, result, fields) => {
         if (!err) {
@@ -320,3 +335,12 @@ async function generatePasswordHash(plaintextPassword) {
     throw error;
   }
 }
+
+app.get("/new/test/:testID/:movieName", (req, res) => {
+  console.log(req.params.testID);
+  res.end("req-param : " + req.params.testID + "," + req.params.movieName);
+});
+app.get("/new/test", (req, res) => {
+  console.log(req.params.testID);
+  res.end("query-param : " + req.query.testID + "," + req.query.movieName);
+});
