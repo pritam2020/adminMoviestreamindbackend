@@ -7,10 +7,10 @@ const multer = require("multer");
 const session = require("express-session");
 const app = express();
 const PORT = 3002;
-const dotenv=require('dotenv');
+const dotenv = require("dotenv");
 
 var count = 0;
-
+app.use(require("express-status-monitor")());
 dotenv.config();
 
 const MovieStorage = multer.diskStorage({
@@ -25,9 +25,6 @@ const MovieStorage = multer.diskStorage({
 });
 const MovieDestnitation = multer({ storage: MovieStorage });
 
-
-
-
 const ThumbnailStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Specify the destination directory where the uploaded file should be stored
@@ -40,13 +37,11 @@ const ThumbnailStorage = multer.diskStorage({
 });
 const ThumbnailDestnitation = multer({ storage: ThumbnailStorage });
 
-
-
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
-  password:process.env.DB_PASSWORD,
+  password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
 connection.connect((err) => {
@@ -57,13 +52,7 @@ connection.connect((err) => {
   console.log("Connected to database");
 });
 
-
-
-
 app.set("view engine, ejs");
-
-
-
 
 app.use(
   session({
@@ -71,30 +60,35 @@ app.use(
     resave: false,
     saveUninitialized: true,
     // cookie: { maxAge: 60000 }
-  }));
+  })
+);
 app.use("/protected-route", (req, res, next) => {
   if (!req.session.user) {
-  //  console.log(req.session);
-  //  console.log("session..." + req.session.user + "\n\n");
+    //  console.log(req.session);
+    //  console.log("session..." + req.session.user + "\n\n");
     return res.status(401).end("You must be logged in to access this resource");
   }
-//  console.log(req.session);
+  //  console.log(req.session);
   //console.log("session..." + req.session.user.username + "\n\n");
   next();
 });
-app.use("/protected-route/views",express.static(path.join(__dirname, "Views", "console")));
-app.use("/protected-route/videos",express.static(path.join(__dirname, "VideoGallery")));
-app.use("/protected-route/images",express.static(path.join(__dirname, "resources")));
 
-
-
+app.use(
+  "/protected-route/views/",
+  express.static(path.join(__dirname, "Views"))
+);
+app.use(
+  "/protected-route/videos",
+  express.static(path.join(__dirname, "VideoGallery"))
+);
+app.use(
+  "/protected-route/images",
+  express.static(path.join(__dirname, "resources"))
+);
 
 app.listen(PORT, () => {
   console.log(`node server is running on port : ${PORT}....`);
 });
-
-
-
 
 app.get("/", (req, res) => {
   fs.readFile("./Views/AdminLogin.html", (err, data) => {
@@ -106,74 +100,91 @@ app.get("/", (req, res) => {
   });
 });
 
-
-
-
-app.post("/adminlogin",bodyParser.urlencoded({ extended: true }),adminAuthenticate,(req, res) => {
+app.post(
+  "/adminlogin",
+  bodyParser.urlencoded({ extended: true }),
+  adminAuthenticate,
+  (req, res) => {
     console.log("success");
     console.log(process.env.SERVER);
     //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
     res.redirect(
-      `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/VideoGallery.html`
+      `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/console/html/VideoGallery.html`
     );
   }
 );
-
-
-
 
 app.get("/protected-route/videodetails", (req, res) => {
   connection.query("select * from moviedetails", (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      var tabs=result;
-      console.log("length of result..."+tabs.length);
+      var tabs = result;
+      console.log("length of result..." + tabs.length);
       console.log(tabs);
       console.log("result after fetching movie details..." + result);
-      const data={
-        tabs:Math.ceil(result.length/50),
-        result:result
-      }
+      const data = {
+        tabs: Math.ceil(result.length / 50),
+        result: result,
+      };
       res.end(JSON.stringify(data));
     }
   });
 });
 
-
-
-
-app.post("/protected-route/Upload",bodyParser.urlencoded({ extended: true }),MovieDestnitation.single("video"),ThumbnailDestnitation.single("nail"),(req, res) => {
+app.post(
+  "/protected-route/Upload",
+  bodyParser.urlencoded({ extended: true }),
+  MovieDestnitation.single("video"),
+  ThumbnailDestnitation.single("nail"),
+  (req, res) => {
     console.log("file uploaded...");
     // console.log(req)
     console.log(req.file.filename);
     console.log(req.file.fieldname);
     console.log(req.body);
     const description = "blahh blah blah..." + count;
-    const MovieID=generateMovieID();
-    var genre;var cname;var dname;
-    if(Array.isArray(req.body.genre)){genre = req.body.genre.join();}else {genre=req.body.genre}
-    if(Array.isArray(req.body.dname)){dname = req.body.dname.join();}else {dname=req.body.dname}
-    if(Array.isArray(req.body.cname)){cname = req.body.cname.join();}else {cname=req.body.cname}
+    const MovieID = generateMovieID();
+    var genre;
+    var cname;
+    var dname;
+    if (Array.isArray(req.body.genre)) {
+      genre = req.body.genre.join();
+    } else {
+      genre = req.body.genre;
+    }
+    if (Array.isArray(req.body.dname)) {
+      dname = req.body.dname.join();
+    } else {
+      dname = req.body.dname;
+    }
+    if (Array.isArray(req.body.cname)) {
+      cname = req.body.cname.join();
+    } else {
+      cname = req.body.cname;
+    }
     console.log(genre);
     console.log(cname);
     console.log(dname);
-    var SqlQuery="insert into moviedetails values (?,?,?,?,?,?,?,?,?,?)"
+    var SqlQuery = "insert into moviedetails values (?,?,?,?,?,?,?,?,?,?)";
     //  const fileNames = req.files.map((file) => { file.originalname; connection.query(`insert into moviedetails values(${generateMovieID()},'${file.originalname}','${description + count++}')`, (err, result) => { if (!err) { res.sendFile(path.join(__dirname, 'Views', 'console', 'UploadVideo.html')); console.log("movie details uploadede is db..."); console.log(result); } else { console.log(err); } }); });
     //console.log('Uploaded file names:', fileNames);
     // console.log(req);
-    connection.query(SqlQuery,
-      [   MovieID,
-          req.file.originalname,
-          req.body.description,
-          genre,
-          req.body.Olanguage,
-          dname,
-          cname,
-          req.body.rdate,
-          req.body.rating,
-          req.body.language],
-      (err, result,fields) => {
+    connection.query(
+      SqlQuery,
+      [
+        MovieID,
+        req.file.originalname,
+        req.body.description,
+        genre,
+        req.body.Olanguage,
+        dname,
+        cname,
+        req.body.rdate,
+        req.body.rating,
+        req.body.language,
+      ],
+      (err, result, fields) => {
         if (!err) {
           res.sendFile(
             path.join(__dirname, "Views", "console", "UploadVideo.html")
@@ -185,9 +196,6 @@ app.post("/protected-route/Upload",bodyParser.urlencoded({ extended: true }),Mov
         }
       }
     );
-
-    
-    
   }
 );
 
@@ -216,7 +224,7 @@ app.get("/protected-route/deletemovie", (req, res) => {
     );
     //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
     res.redirect(
-      `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/videogallery.html`
+      `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/console/html/videogallery.html`
     );
   });
 });
@@ -301,15 +309,14 @@ function generateMovieID() {
   return result;
 }
 
-
-async function generatePasswordHash(plaintextPassword){
+async function generatePasswordHash(plaintextPassword) {
   try {
     // Generate a salt (a random string) to add to the password
     const saltRounds = 10; // You can adjust this value for more or less security
     const hashedPassword = await bcrypt.hash(plaintextPassword, saltRounds);
     return hashedPassword;
   } catch (error) {
-    console.error('Error hashing password:', error);
+    console.error("Error hashing password:", error);
     throw error;
   }
 }
