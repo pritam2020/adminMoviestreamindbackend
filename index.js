@@ -201,9 +201,7 @@ app.post(
       ],
       (err, result, fields) => {
         if (!err) {
-          res.sendFile(
-            path.join(__dirname, "Views", "console", "UploadVideo.html")
-          );
+          res.redirect("./views/console/html/UploadVideo.html")
           console.log("movie details uploadede is db...");
           console.log(result);
         } else {
