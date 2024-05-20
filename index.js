@@ -8,6 +8,7 @@ const session = require("express-session");
 const app = express();
 const PORT = 3002;
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 var count = 0;
 app.use(require("express-status-monitor")());
@@ -27,6 +28,7 @@ const fantasyRouter = require("./Routers/home/fantasy");
 const awardwinningRouter = require("./Routers/home/awardwinning");
 const warRouter = require("./Routers/home/war");
 const documentaryRouter = require("./Routers/home/documentary");
+const streamingRouter = require("./Routers/streaming/streaming");
 
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -78,6 +80,8 @@ connection.connect((err) => {
 
 app.set("view engine, ejs");
 
+app.use(cors());
+
 app.use(
   session({
     secret: "your_secret_key", // Secret used to sign the session ID cookie
@@ -110,7 +114,7 @@ app.use(
   express.static(path.join(__dirname, "resources"))
 );
 app.use(
-  "/thumbnails",
+  "/protected-route/thumbnails",
   express.static(path.join(__dirname, "Thumbnails"))
 );
 
@@ -133,12 +137,27 @@ app.post(
   bodyParser.urlencoded({ extended: true }),
   adminAuthenticate,
   (req, res) => {
+    console.log(req.body);
     console.log("success");
     console.log(process.env.SERVER);
     //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
     res.redirect(
       `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/console/html/VideoGallery.html`
     );
+  }
+);
+app.post(
+  "/clientlogin",
+  bodyParser.json(),
+  adminAuthenticate,
+  (req, res) => {
+    console.log(req.body);
+    console.log("success");
+    console.log(process.env.SERVER);
+    res.status(200).json({
+      message: 'login success',
+      status: 'success'
+    });
   }
 );
 
@@ -272,20 +291,21 @@ app.get("/protected-route/logout", (req, res) => {
   });
 });
 
-app.use("/moviedetails/comedy", comedyRouter);
-app.use("/moviedetails/romance", romanceRouter);
-app.use("/moviedetails/scifi", scifiRouter);
-app.use("/moviedetails/action", actionRouter);
-app.use("/moviedetails/adventure", adventureRouter);
-app.use("/moviedetails/biography", biographyRouter);
-app.use("/moviedetails/documentary", documentaryRouter);
-app.use("/moviedetails/drama", dramaRouter);
-app.use("/moviedetails/horror", horrorRouter);
-app.use("/moviedetails/mystery", mysteryRouter);
-app.use("/moviedetails/war", warRouter);
-app.use("/moviedetails/awardwinning", awardwinningRouter);
-app.use("/moviedetails/thriller", thrillerRouter);
-app.use("/moviedetails/fantasy", fantasyRouter);
+app.use("/protected-route/moviedetails/comedy", comedyRouter);
+app.use("/protected-route/moviedetails/romance", romanceRouter);
+app.use("/protected-route/moviedetails/scifi", scifiRouter);
+app.use("/protected-route/moviedetails/action", actionRouter);
+app.use("/protected-route/moviedetails/adventure", adventureRouter);
+app.use("/protected-route/moviedetails/biography", biographyRouter);
+app.use("/protected-route/moviedetails/documentary", documentaryRouter);
+app.use("/protected-route/moviedetails/drama", dramaRouter);
+app.use("/protected-route/moviedetails/horror", horrorRouter);
+app.use("/protected-route/moviedetails/mystery", mysteryRouter);
+app.use("/protected-route/moviedetails/war", warRouter);
+app.use("/protected-route/moviedetails/awardwinning", awardwinningRouter);
+app.use("/protected-route/moviedetails/thriller", thrillerRouter);
+app.use("/protected-route/moviedetails/fantasy", fantasyRouter);
+app.use("/protected-route/moviedetails", streamingRouter);
 
 // app.get('/videogallery/video',(req,res)=>{
 //   console.log('success');
@@ -297,41 +317,22 @@ app.use("/moviedetails/fantasy", fantasyRouter);
 
 function adminAuthenticate(req, res, next) {
   console.log("in adminAuthenticate middleware");
-  //console.log(req.body);
-  // const connection = mysql.createConnection({
-  //   host: '192.168.29.245',
-  //   port: 3306,
-  //   user: 'root',
-  //   password: 'Unique@18',
-  //   database: 'moviestreaming'
-  // });
-  // connection.connect((err) => {
-  //   if (err) {
-  //     console.error('Error connecting to database:', err);
-  //     return;
-  //   }
-  //   console.log('Connected to database');
-  // });
+  console.log(req.body);
   connection.query(
     `SELECT * FROM admin where UserName='${req.body.username}' and Password_Hash='${req.body.password}' `,
     (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
+        res.status(500).json({ message: 'error while inserting data in DB' });
         return;
       } else {
-        if (results.length != 0) {
-          req.session.user = {
-            username: req.body.username,
-          };
+        if (results.length != 0 && results[0].UserName == req.body.username && results[0].Password_Hash == req.body.password) {
+          req.session.user = {username: req.body.username};
+          console.log(results);
           next();
         } else {
           console.log("admin User dosenot exists..." + results);
-          fs.readFile("./Views/UserDoseNotExists.html", (err, data) => {
-            if (!err) {
-              res.writeHead(200, { "Content-Type": "text/html" });
-              res.end(data);
-            } else console.log(err);
-          });
+          res.status(401).json({ status: 'Unauthorized', message: 'user dose not exists' });
         }
       }
       //console.log('Query results:', results);
