@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
       } else {
         console.log(results);
         if ((results.length == 0)) {
-          res.status(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).jsonus(404).json({messgae: "Award-winning movie not found"});
+          res.status(404).json({messgae: "Award-winning movie not found"});
         } else {
     res.status(200).json(results);
         }

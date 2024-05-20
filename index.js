@@ -13,20 +13,20 @@ var count = 0;
 app.use(require("express-status-monitor")());
 dotenv.config();
 
-const comedyRouter = require("./Routers/comedy");
-const actionRouter = require("./Routers/action");
-const horrorRouter = require("./Routers/horror");
-const romanceRouter = require("./Routers/romance");
-const thrillerRouter = require("./Routers/thriller");
-const adventureRouter = require("./Routers/adventure");
-const scifiRouter = require("./Routers/scifi");
-const dramaRouter = require("./Routers/drama");
-const biographyRouter = require("./Routers/biography");
-const mysteryRouter = require("./Routers/mystery");
-const fantasyRouter = require("./Routers/fantasy");
-const awardwinningRouter = require("./Routers/awardwinning");
-const warRouter = require("./Routers/war");
-const documentaryRouter = require("./Routers/documentary");
+const comedyRouter = require("./Routers/home/comedy");
+const actionRouter = require("./Routers/home/action");
+const horrorRouter = require("./Routers/home/horror");
+const romanceRouter = require("./Routers/home/romance");
+const thrillerRouter = require("./Routers/home/thriller");
+const adventureRouter = require("./Routers/home/adventure");
+const scifiRouter = require("./Routers/home/scifi");
+const dramaRouter = require("./Routers/home/drama");
+const biographyRouter = require("./Routers/home/biography");
+const mysteryRouter = require("./Routers/home/mystery");
+const fantasyRouter = require("./Routers/home/fantasy");
+const awardwinningRouter = require("./Routers/home/awardwinning");
+const warRouter = require("./Routers/home/war");
+const documentaryRouter = require("./Routers/home/documentary");
 
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
