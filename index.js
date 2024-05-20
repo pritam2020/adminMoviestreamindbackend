@@ -13,36 +13,34 @@ var count = 0;
 app.use(require("express-status-monitor")());
 dotenv.config();
 
-const comedyRouter=require('./Routers/comedy');
-const actionRouter=require('./Routers/action');
-const horrorRouter=require('./Routers/horror');
-const romanceRouter=require('./Routers/romance');
-const thrillerRouter=require('./Routers/thriller');
-const adventureRouter=require('./Routers/adventure');
-const scifiRouter=require('./Routers/scifi');
-const dramaRouter=require('./Routers/drama');
-const biographyRouter=require('./Routers/biography');
-const mysteryRouter=require('./Routers/mystery');
-const fantasyRouter=require('./Routers/fantasy');
-const awardwinningRouter=require('./Routers/awardwinning');
-const warRouter=require('./Routers/war');
-const documentaryRouter=require('./Routers/documentary');
-
+const comedyRouter = require("./Routers/comedy");
+const actionRouter = require("./Routers/action");
+const horrorRouter = require("./Routers/horror");
+const romanceRouter = require("./Routers/romance");
+const thrillerRouter = require("./Routers/thriller");
+const adventureRouter = require("./Routers/adventure");
+const scifiRouter = require("./Routers/scifi");
+const dramaRouter = require("./Routers/drama");
+const biographyRouter = require("./Routers/biography");
+const mysteryRouter = require("./Routers/mystery");
+const fantasyRouter = require("./Routers/fantasy");
+const awardwinningRouter = require("./Routers/awardwinning");
+const warRouter = require("./Routers/war");
+const documentaryRouter = require("./Routers/documentary");
 
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Specify the destination directory where the uploaded file should be stored
-    console.log("in multer")
+    console.log("in multer");
     console.log(file);
 
-    if(file.fieldname=="video"){
+    if (file.fieldname == "video") {
       cb(null, "./VideoGallery/");
-    }
-    else if(file.fieldname=="nail"){
+    } else if (file.fieldname == "nail") {
       cb(null, "./Thumbnails/");
     }
-    
-     // 'uploads/' is the destination directory in this example
+
+    // 'uploads/' is the destination directory in this example
   },
   filename: function (req, file, cb) {
     // Generate a unique filename for the uploaded file
@@ -78,7 +76,6 @@ connection.connect((err) => {
   console.log("Connected to database");
 });
 
-
 app.set("view engine, ejs");
 
 app.use(
@@ -113,7 +110,7 @@ app.use(
   express.static(path.join(__dirname, "resources"))
 );
 app.use(
-  "/protected-route/thumbnails",
+  "/thumbnails",
   express.static(path.join(__dirname, "Thumbnails"))
 );
 
@@ -168,7 +165,7 @@ app.post(
   bodyParser.urlencoded({ extended: true }),
   MovieDestnitation.fields([
     { name: "video", maxCount: 1 },
-    { name: "nail", maxCount: 1 }
+    { name: "nail", maxCount: 1 },
   ]),
 
   (req, res) => {
@@ -217,12 +214,10 @@ app.post(
         cname,
         dname,
         req.body.rdate,
-        
-       
       ],
       (err, result, fields) => {
         if (!err) {
-          res.redirect("./views/console/html/UploadVideo.html")
+          res.redirect("./views/console/html/UploadVideo.html");
           console.log("movie details uploadede is db...");
           console.log(result);
         } else {
@@ -277,24 +272,20 @@ app.get("/protected-route/logout", (req, res) => {
   });
 });
 
-
-app.use("/moviedetails/comedy",comedyRouter);
-app.use("/moviedetails/romance",romanceRouter);
-app.use("/moviedetails/scifi",scifiRouter);
-app.use("/moviedetails/action",actionRouter);
-app.use("/moviedetails/adventure",adventureRouter);
-app.use("/moviedetails/biography",biographyRouter);
-app.use("/moviedetails/documentary",documentaryRouter);
-app.use("/moviedetails/drama",dramaRouter);
-app.use("/moviedetails/horror",horrorRouter);
-app.use("/moviedetails/mystery",mysteryRouter);
-app.use("/moviedetails/war",warRouter);
-app.use("/moviedetails/awardwinning",awardwinningRouter);
-app.use("/moviedetails/thriller",thrillerRouter);
-app.use("/moviedetails/fantasy",fantasyRouter);
-
-
-
+app.use("/moviedetails/comedy", comedyRouter);
+app.use("/moviedetails/romance", romanceRouter);
+app.use("/moviedetails/scifi", scifiRouter);
+app.use("/moviedetails/action", actionRouter);
+app.use("/moviedetails/adventure", adventureRouter);
+app.use("/moviedetails/biography", biographyRouter);
+app.use("/moviedetails/documentary", documentaryRouter);
+app.use("/moviedetails/drama", dramaRouter);
+app.use("/moviedetails/horror", horrorRouter);
+app.use("/moviedetails/mystery", mysteryRouter);
+app.use("/moviedetails/war", warRouter);
+app.use("/moviedetails/awardwinning", awardwinningRouter);
+app.use("/moviedetails/thriller", thrillerRouter);
+app.use("/moviedetails/fantasy", fantasyRouter);
 
 // app.get('/videogallery/video',(req,res)=>{
 //   console.log('success');

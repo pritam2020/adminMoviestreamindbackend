@@ -22,13 +22,13 @@ router.get("/", (req, res) => {
     `SELECT Thumbnail,MovieName,MovieID FROM moviedetails where Genre like('%Drama%')`,
     (err, results) => {
       if (err) {
-        res.status(200).json(err);
+        res.status(500).json(err);
       } else {
         console.log(results);
         if ((results.length == 0)) {
-          res.json({messgae: "Drama movie not found"});
+          res.status(404).json({messgae: "Drama movie not found"});
         } else {
-          res.status(500).json(results);
+    res.status(200).json(results);
         }
       }
     }
