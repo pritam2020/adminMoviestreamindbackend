@@ -26,6 +26,7 @@ const mysteryRouter=require('./Routers/mystery');
 const fantasyRouter=require('./Routers/fantasy');
 const awardwinningRouter=require('./Routers/awardwinning');
 const warRouter=require('./Routers/war');
+const documentaryRouter=require('./Routers/documentary');
 
 
 const MovieStorage = multer.diskStorage({
@@ -76,6 +77,7 @@ connection.connect((err) => {
   }
   console.log("Connected to database");
 });
+
 
 app.set("view engine, ejs");
 
@@ -281,15 +283,15 @@ app.use("/moviedetails/romance",romanceRouter);
 app.use("/moviedetails/scifi",scifiRouter);
 app.use("/moviedetails/action",actionRouter);
 app.use("/moviedetails/adventure",adventureRouter);
-// app.use("/moviedetails/biography",biographyRouter);
-// app.use("/moviedetails/documentary",documentaryRouter);
-// app.use("/moviedetails/drama",dramaRouter);
-// app.use("/moviedetails/horror",horrorRouter);
-// app.use("/moviedetails/mystery",mysteryRouter);
-// app.use("/moviedetails/romance",warRouter);
-// app.use("/moviedetails/awardwinning",awardwinningRouter);
-// app.use("/moviedetails/thriller",thrillerRouter);
-// app.use("/moviedetails/fantasy",fantasyRouter);
+app.use("/moviedetails/biography",biographyRouter);
+app.use("/moviedetails/documentary",documentaryRouter);
+app.use("/moviedetails/drama",dramaRouter);
+app.use("/moviedetails/horror",horrorRouter);
+app.use("/moviedetails/mystery",mysteryRouter);
+app.use("/moviedetails/war",warRouter);
+app.use("/moviedetails/awardwinning",awardwinningRouter);
+app.use("/moviedetails/thriller",thrillerRouter);
+app.use("/moviedetails/fantasy",fantasyRouter);
 
 
 
