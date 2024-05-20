@@ -13,6 +13,21 @@ var count = 0;
 app.use(require("express-status-monitor")());
 dotenv.config();
 
+const comedyRouter=require('./Routers/comedy');
+const actionRouter=require('./Routers/action');
+const horrorRouter=require('./Routers/horror');
+const romanceRouter=require('./Routers/romance');
+const thrillerRouter=require('./Routers/thriller');
+const adventureRouter=require('./Routers/adventure');
+const scifiRouter=require('./Routers/scifi');
+const dramaRouter=require('./Routers/drama');
+const biographyRouter=require('./Routers/biography');
+const mysteryRouter=require('./Routers/mystery');
+const fantasyRouter=require('./Routers/fantasy');
+const awardwinningRouter=require('./Routers/awardwinning');
+const warRouter=require('./Routers/war');
+
+
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Specify the destination directory where the uploaded file should be stored
@@ -94,6 +109,10 @@ app.use(
 app.use(
   "/protected-route/images",
   express.static(path.join(__dirname, "resources"))
+);
+app.use(
+  "/protected-route/thumbnails",
+  express.static(path.join(__dirname, "Thumbnails"))
 );
 
 app.listen(PORT, () => {
@@ -255,6 +274,25 @@ app.get("/protected-route/logout", (req, res) => {
     }
   });
 });
+
+
+app.use("/moviedetails/comedy",comedyRouter);
+app.use("/moviedetails/romance",romanceRouter);
+app.use("/moviedetails/scifi",scifiRouter);
+app.use("/moviedetails/action",actionRouter);
+app.use("/moviedetails/adventure",adventureRouter);
+// app.use("/moviedetails/biography",biographyRouter);
+// app.use("/moviedetails/documentary",documentaryRouter);
+// app.use("/moviedetails/drama",dramaRouter);
+// app.use("/moviedetails/horror",horrorRouter);
+// app.use("/moviedetails/mystery",mysteryRouter);
+// app.use("/moviedetails/romance",warRouter);
+// app.use("/moviedetails/awardwinning",awardwinningRouter);
+// app.use("/moviedetails/thriller",thrillerRouter);
+// app.use("/moviedetails/fantasy",fantasyRouter);
+
+
+
 
 // app.get('/videogallery/video',(req,res)=>{
 //   console.log('success');
