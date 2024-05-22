@@ -1,19 +1,3 @@
-const express = require("express");
-const fs = require("fs");
-const bodyParser = require("body-parser");
-const mysql = require("mysql2");
-const path = require("path");
-const multer = require("multer");
-const session = require("express-session");
-const app = express();
-const PORT = 3002;
-const dotenv = require("dotenv");
-const cors = require("cors");
-
-var count = 0;
-app.use(require("express-status-monitor")());
-dotenv.config();
-
 const comedyRouter = require("./Routers/home/comedy");
 const actionRouter = require("./Routers/home/action");
 const horrorRouter = require("./Routers/home/horror");
@@ -29,6 +13,28 @@ const awardwinningRouter = require("./Routers/home/awardwinning");
 const warRouter = require("./Routers/home/war");
 const documentaryRouter = require("./Routers/home/documentary");
 const streamingRouter = require("./Routers/streaming/streaming");
+const login = require("./Routers/authentication/login");
+const logout = require("./Routers/authentication/logout");
+const signup = require("./Routers/authentication/signup");
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+const session = require("express-session");
+const app = express();
+const cors = require("cors");
+const PORT = 3002;
+const dotenv = require("dotenv");
+const bcrypt = require('bcrypt');
+const bodyParser = require("body-parser");
+const mysql = require("mysql2");
+
+
+dotenv.config();
+var count = 0;
+
+
+
 
 const MovieStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -70,20 +76,25 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to database:", err);
-    return;
-  }
-  console.log("Connected to database");
-});
+// connection.connect((err) => {
+//   if (err) {
+//     console.error("Error connecting to database:", err);
+//     return;
+//   }
+//   console.log("Connected to database  in index.js line 85");
+// });
+
 
 app.set("view engine, ejs");
 
-app.use(cors());
 
-app.use(
-  session({
+
+// -------------------------------------Middlewares-------------------------------------
+
+
+app.use(require("express-status-monitor")());
+app.use(cors());
+app.use(session({
     secret: "your_secret_key", // Secret used to sign the session ID cookie
     resave: false,
     saveUninitialized: true,
@@ -100,28 +111,53 @@ app.use("/protected-route", (req, res, next) => {
   //console.log("session..." + req.session.user.username + "\n\n");
   next();
 });
-
-app.use(
-  "/protected-route/views/",
-  express.static(path.join(__dirname, "Views"))
-);
-app.use(
-  "/protected-route/videos",
-  express.static(path.join(__dirname, "VideoGallery"))
-);
-app.use(
-  "/protected-route/images",
-  express.static(path.join(__dirname, "resources"))
-);
-app.use(
-  "/protected-route/thumbnails",
-  express.static(path.join(__dirname, "Thumbnails"))
-);
+app.use("/protected-route/views/",express.static(path.join(__dirname, "Views")));
+app.use("/protected-route/videos",express.static(path.join(__dirname, "VideoGallery")));
+app.use("/protected-route/images",express.static(path.join(__dirname, "resources")));
+app.use("/protected-route/thumbnails",express.static(path.join(__dirname, "Thumbnails")));
+app.use("/protected-route/moviedetails/comedy", comedyRouter);
+app.use("/protected-route/moviedetails/romance", romanceRouter);
+app.use("/protected-route/moviedetails/scifi", scifiRouter);
+app.use("/protected-route/moviedetails/action", actionRouter);
+app.use("/protected-route/moviedetails/adventure", adventureRouter);
+app.use("/protected-route/moviedetails/biography", biographyRouter);
+app.use("/protected-route/moviedetails/documentary", documentaryRouter);
+app.use("/protected-route/moviedetails/drama", dramaRouter);
+app.use("/protected-route/moviedetails/horror", horrorRouter);
+app.use("/protected-route/moviedetails/mystery", mysteryRouter);
+app.use("/protected-route/moviedetails/war", warRouter);
+app.use("/protected-route/moviedetails/awardwinning", awardwinningRouter);
+app.use("/protected-route/moviedetails/thriller", thrillerRouter);
+app.use("/protected-route/moviedetails/fantasy", fantasyRouter);
+app.use("/protected-route/moviedetails", streamingRouter);
+app.use("/clientlogin",login);
+app.use("/clientsignup",signup);
+app.use("/protected-route/clientlogout",logout);
 
 app.listen(PORT, () => {
   console.log(`node server is running on port : ${PORT}....`);
 });
 
+
+// ---------------------------------------------------------------------routes----------------------------------------------------
+
+
+
+
+
+app.get("/protected-route/clientdelete", (req, res) => {
+  req.session.user.username = "";
+
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ message: `error logging-out`, status: 'error' });
+    } else {
+      console.log("logged out successfully");
+      res.status(200).json({ message: 'successfully logged out', status: 'success' });
+    }
+  });
+});
 app.get("/", (req, res) => {
   fs.readFile("./Views/AdminLogin.html", (err, data) => {
     if (!err) {
@@ -131,12 +167,7 @@ app.get("/", (req, res) => {
     } else console.log(err);
   });
 });
-
-app.post(
-  "/adminlogin",
-  bodyParser.urlencoded({ extended: true }),
-  adminAuthenticate,
-  (req, res) => {
+app.post("/adminlogin",bodyParser.urlencoded({ extended: true }),adminAuthenticate,(req, res) => {
     console.log(req.body);
     console.log("success");
     console.log(process.env.SERVER);
@@ -146,21 +177,6 @@ app.post(
     );
   }
 );
-app.post(
-  "/clientlogin",
-  bodyParser.json(),
-  adminAuthenticate,
-  (req, res) => {
-    console.log(req.body);
-    console.log("success");
-    console.log(process.env.SERVER);
-    res.status(200).json({
-      message: 'login success',
-      status: 'success'
-    });
-  }
-);
-
 app.get("/protected-route/videodetails", (req, res) => {
   connection.query("select * from moviedetails", (err, result) => {
     if (err) {
@@ -178,16 +194,7 @@ app.get("/protected-route/videodetails", (req, res) => {
     }
   });
 });
-
-app.post(
-  "/protected-route/Upload",
-  bodyParser.urlencoded({ extended: true }),
-  MovieDestnitation.fields([
-    { name: "video", maxCount: 1 },
-    { name: "nail", maxCount: 1 },
-  ]),
-
-  (req, res) => {
+app.post("/protected-route/Upload",bodyParser.urlencoded({ extended: true }), MovieDestnitation.fields([{ name: "video", maxCount: 1 },{ name: "nail", maxCount: 1 },]),(req, res) => {
     console.log("file uploaded...");
     // console.log(req)
     console.log(req.file);
@@ -246,7 +253,6 @@ app.post(
     );
   }
 );
-
 app.get("/protected-route/deletemovie", (req, res) => {
   console.log(req.query.MovieID);
   const filePath = path.join(
@@ -276,7 +282,6 @@ app.get("/protected-route/deletemovie", (req, res) => {
     );
   });
 });
-
 app.get("/protected-route/logout", (req, res) => {
   req.session.user.username = "";
 
@@ -291,29 +296,9 @@ app.get("/protected-route/logout", (req, res) => {
   });
 });
 
-app.use("/protected-route/moviedetails/comedy", comedyRouter);
-app.use("/protected-route/moviedetails/romance", romanceRouter);
-app.use("/protected-route/moviedetails/scifi", scifiRouter);
-app.use("/protected-route/moviedetails/action", actionRouter);
-app.use("/protected-route/moviedetails/adventure", adventureRouter);
-app.use("/protected-route/moviedetails/biography", biographyRouter);
-app.use("/protected-route/moviedetails/documentary", documentaryRouter);
-app.use("/protected-route/moviedetails/drama", dramaRouter);
-app.use("/protected-route/moviedetails/horror", horrorRouter);
-app.use("/protected-route/moviedetails/mystery", mysteryRouter);
-app.use("/protected-route/moviedetails/war", warRouter);
-app.use("/protected-route/moviedetails/awardwinning", awardwinningRouter);
-app.use("/protected-route/moviedetails/thriller", thrillerRouter);
-app.use("/protected-route/moviedetails/fantasy", fantasyRouter);
-app.use("/protected-route/moviedetails", streamingRouter);
 
-// app.get('/videogallery/video',(req,res)=>{
-//   console.log('success');
-//   const videopath=path.join(__dirname,'VideoGallery','one.mp4');
-//   console.log("video path :"+videopath);
-//   //fs.sendFile('././VideoGallery/one.mp4',(err,data)=>{if(!err){res.writeHead(200,{'Content-Type':'text/html'});}else console.log(err);});
-//   res.sendFile(videopath);
-// })
+
+// -----------------------------------------------------functions ----------------------------------------------------
 
 function adminAuthenticate(req, res, next) {
   console.log("in adminAuthenticate middleware");
@@ -327,7 +312,7 @@ function adminAuthenticate(req, res, next) {
         return;
       } else {
         if (results.length != 0 && results[0].UserName == req.body.username && results[0].Password_Hash == req.body.password) {
-          req.session.user = {username: req.body.username};
+          req.session.user = { username: req.body.username };
           console.log(results);
           next();
         } else {
@@ -342,7 +327,6 @@ function adminAuthenticate(req, res, next) {
   // Close the connection when done
   //connection.end();
 }
-
 function generateMovieID() {
   const length = 10;
   let result = "";
@@ -353,19 +337,7 @@ function generateMovieID() {
   }
   return result;
 }
-
-async function generatePasswordHash(plaintextPassword) {
-  try {
-    // Generate a salt (a random string) to add to the password
-    const saltRounds = 10; // You can adjust this value for more or less security
-    const hashedPassword = await bcrypt.hash(plaintextPassword, saltRounds);
-    return hashedPassword;
-  } catch (error) {
-    console.error("Error hashing password:", error);
-    throw error;
-  }
-}
-
+// ------------------------------------------------------tests ----------------------------------------------------------------
 app.get("/new/test/:testID/:movieName", (req, res) => {
   console.log(req.params.testID);
   res.end("req-param : " + req.params.testID + "," + req.params.movieName);

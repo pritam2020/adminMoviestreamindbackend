@@ -9,13 +9,7 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to database for Specific movie details:", err);
-    return;
-  }
-  console.log("Connected to database for Specific movie details");
-});
+
 
 router.get("/", (req, res) => {
   connection.query(
