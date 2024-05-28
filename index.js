@@ -25,7 +25,7 @@ const app = express();
 const cors = require("cors");
 const PORT = 3002;
 const dotenv = require("dotenv");
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 
@@ -95,11 +95,11 @@ app.set("view engine, ejs");
 app.use(require("express-status-monitor")());
 app.use(cors());
 app.use(session({
-    secret: "your_secret_key", // Secret used to sign the session ID cookie
-    resave: false,
-    saveUninitialized: true,
-    // cookie: { maxAge: 60000 }
-  })
+  secret: "your_secret_key", // Secret used to sign the session ID cookie
+  resave: false,
+  saveUninitialized: true,
+  // cookie: { maxAge: 60000 }
+})
 );
 app.use("/protected-route", (req, res, next) => {
   if (!req.session.user) {
@@ -111,10 +111,10 @@ app.use("/protected-route", (req, res, next) => {
   //console.log("session..." + req.session.user.username + "\n\n");
   next();
 });
-app.use("/protected-route/views/",express.static(path.join(__dirname, "Views")));
-app.use("/protected-route/videos",express.static(path.join(__dirname, "VideoGallery")));
-app.use("/protected-route/images",express.static(path.join(__dirname, "resources")));
-app.use("/protected-route/thumbnails",express.static(path.join(__dirname, "Thumbnails")));
+app.use("/protected-route/views/", express.static(path.join(__dirname, "Views")));
+app.use("/protected-route/videos", express.static(path.join(__dirname, "VideoGallery")));
+app.use("/protected-route/images", express.static(path.join(__dirname, "resources")));
+app.use("/protected-route/thumbnails", express.static(path.join(__dirname, "Thumbnails")));
 app.use("/protected-route/moviedetails/comedy", comedyRouter);
 app.use("/protected-route/moviedetails/romance", romanceRouter);
 app.use("/protected-route/moviedetails/scifi", scifiRouter);
@@ -130,9 +130,9 @@ app.use("/protected-route/moviedetails/awardwinning", awardwinningRouter);
 app.use("/protected-route/moviedetails/thriller", thrillerRouter);
 app.use("/protected-route/moviedetails/fantasy", fantasyRouter);
 app.use("/protected-route/moviedetails", streamingRouter);
-app.use("/clientlogin",login);
-app.use("/clientsignup",signup);
-app.use("/protected-route/clientlogout",logout);
+app.use("/clientlogin", login);
+app.use("/clientsignup", signup);
+app.use("/protected-route/clientlogout", logout);
 
 app.listen(PORT, () => {
   console.log(`node server is running on port : ${PORT}....`);
@@ -167,15 +167,15 @@ app.get("/", (req, res) => {
     } else console.log(err);
   });
 });
-app.post("/adminlogin",bodyParser.urlencoded({ extended: true }),adminAuthenticate,(req, res) => {
-    console.log(req.body);
-    console.log("success");
-    console.log(process.env.SERVER);
-    //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
-    res.redirect(
-      `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/console/html/VideoGallery.html`
-    );
-  }
+app.post("/adminlogin", bodyParser.urlencoded({ extended: true }), adminAuthenticate, (req, res) => {
+  console.log(req.body);
+  console.log("success");
+  console.log(process.env.SERVER);
+  //fs.readFile('./Views/console/VideoGallery.html', (err, data) => { if (!err) { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(data); } else console.log(err); });
+  res.redirect(
+    `http://${process.env.SERVER}:${process.env.PORT}/protected-route/views/console/html/VideoGallery.html`
+  );
+}
 );
 app.get("/protected-route/videodetails", (req, res) => {
   connection.query("select * from moviedetails", (err, result) => {
@@ -194,64 +194,64 @@ app.get("/protected-route/videodetails", (req, res) => {
     }
   });
 });
-app.post("/protected-route/Upload",bodyParser.urlencoded({ extended: true }), MovieDestnitation.fields([{ name: "video", maxCount: 1 },{ name: "nail", maxCount: 1 },]),(req, res) => {
-    console.log("file uploaded...");
-    // console.log(req)
-    console.log(req.file);
-    console.log(req.files);
-    // console.log(req.body);
-    const description = "blahh blah blah..." + count;
-    const MovieID = generateMovieID();
-    var genre;
-    var cname;
-    var dname;
-    if (Array.isArray(req.body.genre)) {
-      genre = req.body.genre.join();
-    } else {
-      genre = req.body.genre;
-    }
-    if (Array.isArray(req.body.dname)) {
-      dname = req.body.dname.join();
-    } else {
-      dname = req.body.dname;
-    }
-    if (Array.isArray(req.body.cname)) {
-      cname = req.body.cname.join();
-    } else {
-      cname = req.body.cname;
-    }
-    // console.log(genre);
-    // console.log(cname);
-    // console.log(dname);
-    var SqlQuery = "insert into moviedetails values (?,?,?,?,?,?,?,?,?,?)";
-    //  const fileNames = req.files.map((file) => { file.originalname; connection.query(`insert into moviedetails values(${generateMovieID()},'${file.originalname}','${description + count++}')`, (err, result) => { if (!err) { res.sendFile(path.join(__dirname, 'Views', 'console', 'UploadVideo.html')); console.log("movie details uploadede is db..."); console.log(result); } else { console.log(err); } }); });
-    //console.log('Uploaded file names:', fileNames);
-    // console.log(req);
-    connection.query(
-      SqlQuery,
-      [
-        MovieID,
-        req.files.video[0].originalname,
-        req.body.description,
-        genre,
-        req.body.language,
-        req.body.Olanguage,
-        req.body.rating,
-        cname,
-        dname,
-        req.body.rdate,
-      ],
-      (err, result, fields) => {
-        if (!err) {
-          res.redirect("./views/console/html/UploadVideo.html");
-          console.log("movie details uploadede is db...");
-          console.log(result);
-        } else {
-          console.log(err);
-        }
-      }
-    );
+app.post("/protected-route/Upload", bodyParser.urlencoded({ extended: true }), MovieDestnitation.fields([{ name: "video", maxCount: 1 }, { name: "nail", maxCount: 1 },]), (req, res) => {
+  console.log("file uploaded...");
+  // console.log(req)
+  console.log(req.file);
+  console.log(req.files);
+  // console.log(req.body);
+  const description = "blahh blah blah..." + count;
+  const MovieID = generateMovieID();
+  var genre;
+  var cname;
+  var dname;
+  if (Array.isArray(req.body.genre)) {
+    genre = req.body.genre.join();
+  } else {
+    genre = req.body.genre;
   }
+  if (Array.isArray(req.body.dname)) {
+    dname = req.body.dname.join();
+  } else {
+    dname = req.body.dname;
+  }
+  if (Array.isArray(req.body.cname)) {
+    cname = req.body.cname.join();
+  } else {
+    cname = req.body.cname;
+  }
+  // console.log(genre);
+  // console.log(cname);
+  // console.log(dname);
+  var SqlQuery = "insert into moviedetails values (?,?,?,?,?,?,?,?,?,?)";
+  //  const fileNames = req.files.map((file) => { file.originalname; connection.query(`insert into moviedetails values(${generateMovieID()},'${file.originalname}','${description + count++}')`, (err, result) => { if (!err) { res.sendFile(path.join(__dirname, 'Views', 'console', 'UploadVideo.html')); console.log("movie details uploadede is db..."); console.log(result); } else { console.log(err); } }); });
+  //console.log('Uploaded file names:', fileNames);
+  // console.log(req);
+  connection.query(
+    SqlQuery,
+    [
+      MovieID,
+      req.files.video[0].originalname,
+      req.body.description,
+      genre,
+      req.body.language,
+      req.body.Olanguage,
+      req.body.rating,
+      cname,
+      dname,
+      req.body.rdate,
+    ],
+    (err, result, fields) => {
+      if (!err) {
+        res.redirect("./views/console/html/UploadVideo.html");
+        console.log("movie details uploadede is db...");
+        console.log(result);
+      } else {
+        console.log(err);
+      }
+    }
+  );
+}
 );
 app.get("/protected-route/deletemovie", (req, res) => {
   console.log(req.query.MovieID);
