@@ -24,7 +24,7 @@ jobs:
 
     - name: Add remote server to known hosts
       run: |
-        ssh-keyscan 155.248.245.222 >> ~/.ssh/known_hosts
+        ssh-keyscan 144.24.127.8 >> ~/.ssh/known_hosts
 
     - name: Sync files to remote server
       run: |
