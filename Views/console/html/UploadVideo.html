@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../css/UploadVideo.css" />
+    <link rel="stylesheet" href="./css/UploadVideo.css" />
     <style></style>
   </head>
 
@@ -12,14 +12,14 @@
     <!--this is the menu-->
     <div id="menu" class="menu">
       <a
-        href="http://localhost:3002/protected-route/views/console/html/VideoGallery.html"
+        href="/protected-route/views/console/html/VideoGallery.html"
         >Movie Gallery</a
       >
       <a
-        href="http://localhost:3002/protected-route/views/console/html/UploadVideo.html"
+        href="/protected-route/views/console/html/UploadVideo.html"
         >UploadVideo</a
       >
-      <a href="http://localhost:3002/protected-route/logout">logout</a>
+      <a href="/protected-route/logout">logout</a>
     </div>
     <div id="main-content">
       <span class="menu-btn" onclick="toggleMenu()">&#9776;</span>
@@ -40,7 +40,7 @@
       <h2>Movie Details</h2>
 
       <form
-        action="http://localhost:3002/protected-route/upload"
+        action="/protected-route/upload"
         method="post"
         class="movieDetails"
         enctype="multipart/form-data"
@@ -283,6 +283,6 @@
     </div>
     <!--this is the the Upload Button-->
 
-    <script src="../js/UploadVideo.js"></script>
+    <script src="./js/UploadVideo.js"></script>
   </body>
 </html>

@@ -2,3 +2,6 @@
 .png
 .mp4
 !package.json
+VideoGallery/
+Thumbnails/
+notused/

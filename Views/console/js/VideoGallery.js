@@ -93,43 +93,37 @@ function tabDecrement() {
 }
 
 function loadMovies(tab) {
-  var videoContainer = document.getElementsByClassName("container")[0];
-  while (videoContainer.firstChild) {
-    videoContainer.removeChild(videoContainer.firstChild);
+  var Container = document.getElementsByClassName("container")[0];
+  while (Container.firstChild) {
+    Container.removeChild(Container.firstChild);
   }
   for (let i = tab.firstIndex; i <= tab.lastIndex; i++) {
     if (moviedetails.result[i] != undefined) {
-      // console.log(tab.firstIndex + "  line...417");
-      // console.log(tab.lastIndex + "   line...418");
-      // console.log(moviedetails);
-      // console.log("VideoGallery---line 85...");
-      // console.log(element.Name);
 
-      // Create a new div element to contain the video
-      var div = document.createElement("div");
-      div.classList.add("video");
-      // console.log("VideoGallery---line 90...");
+      var videoContainer = document.createElement("div");
+      videoContainer.classList.add("videoContainer");
+
+      var movieName = document.createElement('div');
+      movieName.width = '100%'
+      movieName.height = '100%'
+      movieName.style.overflow = 'hidden'
+      movieName.style.marginLeft = '10px'
+      movieName.style.marginBottom = '10px'
+      movieName.textContent = moviedetails.result[i].MovieName;
+
       var videoElement = document.createElement("video");
-
-      // Set attributes for the video element
       videoElement.controls = true;
       videoElement.width = "100%";
       videoElement.height = "200%";
 
-      // Create a new source element
-      // console.log("VideoGallery---line 99...");
+
       var sourceElement = document.createElement("source");
-
-      // Set attributes for the source element
-      sourceElement.src = `/protected-route/videos/${moviedetails.result[i].MovieName}`;
+      sourceElement.src = `/protected-route/videos/${moviedetails.result[i].FileName}`;
       sourceElement.type = "video/mp4";
-      // console.log("Video name: " + element.MovieName)
 
-      // Append the source element to the video element
       videoElement.appendChild(sourceElement);
-      // console.log("VideoGallery---line 108...");
 
-      // Create the menu container
+
       var menuContainer = document.createElement("menuContainer");
       menuContainer.style.position = "absolute";
       menuContainer.style.top = "0";
@@ -154,11 +148,11 @@ function loadMovies(tab) {
 
         var link = document.createElement("a");
         link.href = `/protected-route/deletemovie?MovieID=${moviedetails.result[i].MovieID}&MovieName=${moviedetails.result[i].MovieName}`;
-        // console.log(`localhost:3002 from client to delete ${element.MovieID}...`)
+
 
         link.style.color = "white";
         link.style.textDecoration = "none";
-        //link.textContent = itemText;
+
 
         var DeleteImage = document.createElement("img");
         DeleteImage.style.width = "18px";
@@ -170,19 +164,14 @@ function loadMovies(tab) {
         ul.appendChild(li);
       });
 
-      // Append the unordered list to the menu container
+
+
+
       menuContainer.appendChild(ul);
-
-      // Append the video element to the div
-      div.appendChild(videoElement);
-      div.appendChild(menuContainer);
-      // console.log("VideoGallery---line 115...");
-
-      var videoContainer = document.getElementsByClassName("container")[0];
-      // console.log("VideoGallery---line 118...");
-
-      //appending the div element to the parent container
-      videoContainer.appendChild(div);
+      videoContainer.appendChild(videoElement);
+      videoContainer.appendChild(menuContainer);
+      videoContainer.appendChild(movieName);
+      Container.appendChild(videoContainer);
     }
   }
 }
