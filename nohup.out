@@ -1,0 +1,32 @@
+db user
+|
+|
+/
+localhost
+node server is running on port : 3002....
+localhost
+node:events:496
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: The client was disconnected by the server because of inactivity. See wait_timeout and interactive_timeout for configuring this behavior.
+    at Connection.protocolError (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:409:17)
+    at Connection.handlePacket (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:451:14)
+    at PacketParser.onPacket (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:97:12)
+    at PacketParser.executeStart (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:104:25)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+Emitted 'error' event on Connection instance at:
+    at Connection.protocolError (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:412:10)
+    at Connection.handlePacket (/home/opc/adminmoviestreamingbackend/node_modules/mysql2/lib/connection.js:451:14)
+    [... lines matching original stack trace ...]
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
+  fatal: true,
+  code: 4031
+}
+
+Node.js v20.12.2

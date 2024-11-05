@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/UploadVideo.css" />
+    <style></style>
+  </head>
+
+  <body>
+    <!--this is the menu-->
+    <div id="menu" class="menu">
+      <a
+        href="/protected-route/views/console/html/VideoGallery.html"
+        >Movie Gallery</a
+      >
+      <a
+        href="/protected-route/views/console/html/UploadVideo.html"
+        >UploadVideo</a
+      >
+      <a href="/protected-route/logout">logout</a>
+    </div>
+    <div id="main-content">
+      <span class="menu-btn" onclick="toggleMenu()">&#9776;</span>
+    </div>
+    <!--this is the menu-->
+
+    <!--this is the the Upload Button-->
+
+    <!-- <h2>Upload a Video</h2>
+    <div class="videoUpload">
+        <form  enctype="multipart/form-data">
+            <input type="file" name="video" id="video" accept="video/*" multiple />
+            <button type="submit">Upload</button>
+        </form>
+    </div> -->
+
+    <div class="videoDetails">
+      <h2>Movie Details</h2>
+
+      <form
+        action="/protected-route/upload"
+        method="post"
+        class="movieDetails"
+        enctype="multipart/form-data"
+      >
+        <br />
+
+        <div>
+          <label for="mname">Movie</label>
+          <input type="text" id="mname" name="mname" value="John" /><br />
+        </div>
+
+        <br />
+
+        <div class="form-group">
+          <label for="video" class="form-label">Upload Movie</label>
+          <label for="video" class="file-label">Choose File</label>
+          <input
+            type="file"
+            name="video"
+            id="video"
+            accept="video/*"
+            class="form-input"
+            onchange="movieSelect(event)"
+          /><span id="movieName"> wrty</span>
+        </div>
+
+        <br />
+
+        <div>
+          <fieldset>
+            <legend>Directors</legend>
+            <label for="dname"></label>
+            <input type="text" id="dname" name="dname" value="Doe" /><span>
+            </span
+            ><button
+              type="button"
+              id="addButton"
+              onClick="addTextBox(this,'dname')"
+            >
+              Add
+            </button>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <div>
+          <fieldset>
+            <legend>Cast Names</legend>
+            <label for="cname"></label>
+            <input type="text" id="cname" name="cname" value="Doe" /><span>
+            </span
+            ><button
+              type="button"
+              id="addButton"
+              onClick="addTextBox(this,'cname')"
+            >
+              Add
+            </button>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <div>
+          <fieldset>
+            <legend>IMDB Rating</legend>
+            <label for="rating"></label>
+            <input
+              type="range"
+              id="rating"
+              name="rating"
+              min="0"
+              max="10"
+              value="0"
+              step="0.1"
+            />
+            <span id="ratingValue">0</span>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <div>
+          <fieldset>
+            <legend>Genre:</legend>
+            <div class="genre-grid">
+              <input
+                type="checkbox"
+                id="Action"
+                name="genre"
+                value="Action"
+              /><label for="Action" class="genre-label">Action</label>
+              <input
+                type="checkbox"
+                id="Drama"
+                name="genre"
+                value="Drama"
+              /><label for="Drama" class="genre-label">Drama</label>
+              <input
+                type="checkbox"
+                id="Sci-fi"
+                name="genre"
+                value="Sci-fi"
+              /><label for="Sci-fi" class="genre-label">Sci-fi</label>
+              <input
+                type="checkbox"
+                id="Romance"
+                name="genre"
+                value="Romance"
+              /><label for="Romance" class="genre-label">Romance</label>
+              <input
+                type="checkbox"
+                id="Comedy"
+                name="genre"
+                value="Comedy"
+              /><label for="Comedy" class="genre-label">Comedy</label>
+              <input
+                type="checkbox"
+                id="Fantasy"
+                name="genre"
+                value="Fantasy"
+              /><label for="Fantasy" class="genre-label">Fantasy</label>
+              <input
+                type="checkbox"
+                id="Adventure"
+                name="genre"
+                value="Adventure"
+              /><label for="Adventure" class="genre-label">Adventure</label>
+              <input
+                type="checkbox"
+                id="Biography"
+                name="genre"
+                value="Biography"
+              /><label for="Biography" class="genre-label">Biography</label>
+              <input
+                type="checkbox"
+                id="Documentary"
+                name="genre"
+                value="Documentary"
+              /><label for="Documentary" class="genre-label">Documentary</label>
+              <input
+                type="checkbox"
+                id="Horror"
+                name="genre"
+                value="Horror"
+              /><label for="Horror" class="genre-label">Horror</label>
+              <input
+                type="checkbox"
+                id="Thriller"
+                name="genre"
+                value="Thriller"
+              /><label for="Thriller" class="genre-label">Thriller</label>
+              <input
+                type="checkbox"
+                id="Mystery"
+                name="genre"
+                value="Mystery"
+              /><label for="Mystery" class="genre-label">Mystery</label>
+              <input type="checkbox" id="War" name="genre" value="War" /><label
+                for="War"
+                class="genre-label"
+                >War</label
+              >
+              <input
+                type="checkbox"
+                id="Award-winning"
+                name="genre"
+                value="Award-winning"
+              /><label for="Award-winning" class="genre-label"
+                >Award-winning</label
+              >
+            </div>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <label for="despription">Description:</label><br />
+        <textarea
+          name="description"
+          rows="7"
+          cols="120"
+          placeholder="enter the description about the movie here"
+        ></textarea
+        ><br />
+        <label for="rdate">release date:</label><br />
+        <input type="date" id="rdate" name="rdate" value="Doe" /><br /><br />
+
+        <div>
+          <fieldset>
+            <legend>Language:</legend>
+            <input type="radio" id="English" name="language" value="English" />
+            <lable for="English">English</lable>
+            <input type="radio" id="Hindi" name="language" value="Hindi" />
+            <lable for="Hindi">Hindi</lable>
+            <input type="radio" id="Bengali" name="language" value="Bengali" />
+            <lable for="Bengali">Bengali</lable>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <div>
+          <fieldset>
+            <legend>Original-language:</legend>
+            <input type="radio" id="English" name="Olanguage" value="English" />
+            <lable for="English">English</lable>
+            <input type="radio" id="Hindi" name="Olanguage" value="Hindi" />
+            <lable for="Hindi">Hindi</lable>
+            <input type="radio" id="Bengali" name="Olanguage" value="Bengali" />
+            <lable for="Bengali">Bengali</lable>
+          </fieldset>
+        </div>
+
+        <br />
+
+        <div class="upload-container">
+          <label for="nail" class="upload-label">Upload a Thumbnail</label>
+          <input
+            type="file"
+            id="nail"
+            name="nail"
+            class="upload-input"
+            onchange="previewImage(event)"
+          />
+          <button class="upload-button" onclick="triggerFileInput(event)">
+            Choose File
+          </button>
+          <img id="preview" class="image-preview" src="#" alt="Preview" />
+          <button type="button" class="remove-button" onclick="removePreview()">
+            Remove
+          </button>
+        </div>
+
+        <br />
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <!--this is the the Upload Button-->
+
+    <script src="./js/UploadVideo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Page</title>
+    <link rel="stylesheet" href="../css/VideoGallery.css" />
+  </head>
+
+  <body>
+    <!--this is the menu-->
+    <div id="menu" class="menu">
+      <a href="/protected-route/views/console/html/VideoGallery.html"
+        >Movie Gallery</a
+      >
+      <a href="/protected-route/views/console/html/UploadVideo.html"
+        >UploadVideo</a
+      >
+      <a href="/protected-route/logout">logout</a>
+    </div>
+
+    <div id="main-content">
+      <span class="menu-btn" onclick="toggleMenu()">&#9776;</span>
+    </div>
+    <!--this is the menu-->
+
+    <!--this is the video container-->
+    <div class="pagination-container">
+      <div class="pagination">
+        <a href="#" onclick="tabDecrement()">&laquo;</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <!--this is demo video source not used dynamically-->
+
+      <!--this is demo video source not used dynamically-->
+    </div>
+    <!--this is the video container-->
+
+    <script src="../js/VideoGallery.js"></script>
+  </body>
+</html>
