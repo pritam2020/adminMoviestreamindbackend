@@ -26,7 +26,7 @@ const multer = require("multer");
 const session = require("express-session");
 const app = express();
 const cors = require("cors");
-const PORT = 3002;
+const PORT = 3000;
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const useragent = require('express-useragent');
@@ -160,7 +160,7 @@ app.get("/checksession",(req,res)=>{
 
 
 // Create HTTPS server
-https.createServer(httpsOptions, app).listen(3002, () => {
+https.createServer(httpsOptions, app).listen(PORT, () => {
   console.log("HTTPS server running on port 3002");
 });
 
