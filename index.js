@@ -161,7 +161,7 @@ app.get("/checksession",(req,res)=>{
 
 // Create HTTPS server
 https.createServer(httpsOptions, app).listen(PORT, () => {
-  console.log("HTTPS server running on port 3002");
+  console.log(`HTTPS server running on port ${PORT}`);
 });
 
 // ---------------------------------------------------------------------routes----------------------------------------------------
