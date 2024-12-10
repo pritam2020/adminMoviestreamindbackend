@@ -1,0 +1,41 @@
+
+name: Deploy to Remote api-Server in OCI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH key
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+
+
+    - name: Add remote server to known hosts
+      run: |
+        ssh-keyscan -v 155.248.245.222 >> ~/.ssh/known_hosts
+
+
+
+    - name: Sync files to remote server
+      run: |
+        rsync -avz  ./ opc@155.248.245.222:/home/opc/adminmoviestreamingbackend
+
+    
+    - name: Install dependencies on remote server
+      run: |
+        ssh opc@155.248.245.222 "cd /home/opc/adminmoviestreamingbackend && npm install"

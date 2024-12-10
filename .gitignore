@@ -9,12 +9,13 @@ ffmpeg/
 Storage/
 SQL_Scripts/
 movieStock/
-.github/
 Thumbnails/
 notused/
 resources/
-server.crt
-server.key
-server.csr
+*.crt
+*.key
+ecosystem.config.js
+*.zip
 .env
 nohup.output
+nginx-configuration.txt

@@ -4,14 +4,10 @@ const dotenv = require("dotenv");
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
+const connection=require("../../utils/DB_connection.js")
+
 dotenv.config()
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
+
 router.post("/",bodyParser.json(),clientAuthenticate,(req, res) => {
     //console.log("request-details: "+req.body);
     console.log(" client success");
@@ -37,7 +33,7 @@ function clientAuthenticate(req, res, next) {
           const isMatch = await bcrypt.compare(req.body.password, results[0].Password_Hash);
           if (isMatch) {
             req.session.user = { username: req.body.username };
-            console.log("request-session-user :",req.session)
+           // console.log("request-session-user :",req.session)
             next();
           } else {
             console.log("Password does not match");

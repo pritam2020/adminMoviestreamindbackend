@@ -4,14 +4,10 @@ const dotenv = require("dotenv");
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
+const connection=require("../../utils/DB_connection.js")
+
 dotenv.config()
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
+
   router.post("/",bodyParser.json(), (req, res) => {
     createUser(req.body.Username, req.body.Password, req.body.FirstName, req.body.LastName, req.body.EmailId, req.body.Country, req.body.Pincode, req.body.City, req, res);
   

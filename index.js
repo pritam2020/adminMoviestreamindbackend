@@ -29,8 +29,9 @@ const cors = require("cors");
 const PORT = 3002;
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const useragent = require('express-useragent');
 const mysql = require("mysql2");
-
+const connection=require("./utils/DB_connection.js")
 
 dotenv.config();
 var count = 0;
@@ -71,13 +72,6 @@ const ThumbnailStorage = multer.diskStorage({
 });
 const ThumbnailDestnitation = multer({ storage: ThumbnailStorage });
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
 const httpsOptions = {
   key: fs.readFileSync(path.resolve(__dirname, "server.key")),
   cert: fs.readFileSync(path.resolve(__dirname, "server.crt")),
@@ -87,7 +81,23 @@ const httpsOptions = {
 
 
 app.use(require("express-status-monitor")());
-app.use(cors({origin:'https://localhost:9000',credentials:true}));
+app.use(cors({origin:`https://${process.env.CORS_ORIGIN}`,credentials:true}));
+
+// app.use(useragent.express());
+
+
+
+// app.get('/', (req, res) => {
+//     if (req.useragent.isDesktop) {
+//         res.send('Request is from a PC');
+//     } else if (req.useragent.isMobile) {
+//         res.send('Request is from a mobile device');
+//     } else if (req.useragent.isTablet) {
+//         res.send('Request is from a tablet');
+//     } else {
+//         res.send('Unknown device');
+//     }
+// });
 app.use(session({
     secret: "your_secret_key", // Secret used to sign the session ID cookie
     resave: false,
@@ -104,7 +114,7 @@ app.use("/protected-route", (req, res, next) => {
   next();
 });
 app.use("/protected-route/views/", express.static(path.join(__dirname, "Views")));
-app.use("/protected-route/videos", express.static(path.join(__dirname, "movieStock")));
+app.use("/protected-route/videos", express.static(path.join(__dirname, "CompressedMovieStock")));
 app.use("/protected-route/images", express.static(path.join(__dirname, "resources")));
 app.use("/protected-route/thumbnails", express.static(path.join(__dirname, "Thumbnails")));
 app.use("/protected-route/carousel",express.static(path.join(__dirname, "Carousel")));
@@ -137,7 +147,7 @@ app.get("/checksession",(req,res)=>{
     res.status(200).json({loggedin:true});
   }else{
     console.log("client-not-loggedin")
-    console.log("client-request",req)
+   // console.log("client-request",req)
     res.status(401).json({loggedin:false})
   }
 })
