@@ -33,7 +33,7 @@ jobs:
 
     - name: Sync files to remote server
       run: |
-        rsync -avz  --exclude '*.md' ./ opc@155.248.245.222:/home/opc/adminmoviestreamingbackend
+        rsync -avz  --exclude '*.md' --exclude './docs' ./ opc@155.248.245.222:/home/opc/adminmoviestreamingbackend
 
     
     - name: Install dependencies on remote server
