@@ -18,6 +18,7 @@ const login = require("./Routers/authentication/login");
 const logout = require("./Routers/authentication/logout");
 const signup = require("./Routers/authentication/signup");
 const account = require("./Routers/account");
+const videoStreamingRouter = require("./Routers/streaming/videoStreamingRouter")
 const https =require("https");
 const express = require("express");
 const fs = require("fs");
@@ -114,7 +115,8 @@ app.use("/protected-route", (req, res, next) => {
   next();
 });
 app.use("/protected-route/views/", express.static(path.join(__dirname, "Views")));
-app.use("/protected-route/videos", express.static(path.join(__dirname, "CompressedMovieStock")));
+// app.use("/protected-route/videos", express.static(path.join(__dirname, "CompressedMovieStock")));
+app.use("/protected-route/videos",videoStreamingRouter);
 app.use("/protected-route/images", express.static(path.join(__dirname, "resources")));
 app.use("/protected-route/thumbnails", express.static(path.join(__dirname, "Thumbnails")));
 app.use("/protected-route/carousel",express.static(path.join(__dirname, "Carousel")));
