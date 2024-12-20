@@ -6,6 +6,14 @@
 
 This is a movie streaming api. this api works like a sliding window it gives response/results for a window of 3 months and for every three month window it consists all the latest movies of hindi, bengali, english origin of the current window.
 
+## **Features**
+
+This movies4unow api's also used streamming along with http byte range to give the following fetures
+- seeking to any point in the movies
+- unecessary loading of the whole movie
+- pausing and resuming
+- handels in bad network condition etc.
+
 **Sliding-window Concept** **:** [click to checkout](./docs/slidingWindow.md)
 
 ## Genres
