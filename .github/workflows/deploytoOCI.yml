@@ -19,8 +19,8 @@ jobs:
     - name: Check if .md files or doc folder files are changed
       id: check_files
       run: |
-        # Check if any .md files or files in the doc folder are changed in the commit
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.md$|^doc/' && echo "Markdown or doc folder changes detected" && exit 1 || echo "No Markdown or doc folder changes"
+        # Check if any .md files or files in the docs folder are changed in the commit
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.md$|^docs/' && echo "Markdown or doc folder changes detected" && exit 1 || echo "No Markdown or doc folder changes"
     
     
 
