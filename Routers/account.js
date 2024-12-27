@@ -24,8 +24,13 @@ function clientInfo(req, res) {
     console.log("in clientAuthenticate middleware");
    // console.log(req.body);
     connection.query(
-      `SELECT * FROM users where UserName='${req.session.user.username}' `,
+      `SELECT * FROM users where UserName='${req.session.passport.user.username}' `,
       async (err, results) => {
+        if(err){
+          console.log(err);
+          res.status(500).json(err);
+        }
+        else
         if (results.length !== 0) {
           res.status(200).json(results[0]);
         } else {

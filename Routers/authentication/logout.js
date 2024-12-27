@@ -9,7 +9,7 @@ const connection=require("../../utils/DB_connection.js")
 dotenv.config()
 
   router.get("/", (req, res) => {
-    req.session.user.username = "";
+    req.session.passport.user.username = "";
   
     req.session.destroy((err) => {
       if (err) {

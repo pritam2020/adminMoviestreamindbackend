@@ -19,3 +19,4 @@ ecosystem.config.js
 .env
 nohup.output
 nginx-configuration.txt
+google-credentials.json

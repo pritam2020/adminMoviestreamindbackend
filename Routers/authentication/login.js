@@ -4,49 +4,66 @@ const dotenv = require("dotenv");
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
-const connection=require("../../utils/DB_connection.js")
+const connection = require("../../utils/DB_connection.js");
+const LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const dotenvExpand = require('dotenv-expand');
 
-dotenv.config()
+const env=dotenv.config();
+dotenvExpand.expand(env);
 
-router.post("/",bodyParser.json(),clientAuthenticate,(req, res) => {
-    //console.log("request-details: "+req.body);
-    console.log(" client success");
-    //console.log(process.env.SERVER);
-    res.status(200).json({
-      message: 'login success',
-      status: 'success'
-    });
-  }
+passport.use(new LocalStrategy((username, password, cb) => {
+  console.log("username: "+username);
+  console.log("password: "+password);
+  console.log("redirect-url: "+process.env.REACT_HOME);
+  connection.query(
+    `SELECT * FROM users where UserName='${username}' `,
+    async (err, results) => {
+      const user = results[0];
+      if (err) {
+        console.log(err);
+        cb(err, false);
+      }
+      else if (user) {
+        const isMatch = await bcrypt.compare(password, user.Password_Hash);
+        if (isMatch) {
+          console.log("user exists and password matches");
+          cb(null, user);
+        } else {
+          console.log("user exists but Password does not match");
+          cb(null, false);
+        }
+      } else {
+        console.log("User does not exist");
+        cb(null, false);
+      }
+
+    }
+  );
+
+}));
+
+
+passport.serializeUser((user, cb) => {
+  cb(null, { username: user.UserName });
+});
+
+passport.deserializeUser((user, cb) => {
+  
+  cb(null, user);
+});
+
+router.post("/", bodyParser.json(), passport.authenticate('local'), (req, res) => {
+  //console.log("request-details: "+req.body);
+  console.log(" client success");
+  //console.log(process.env.SERVER);
+  res.status(200).json({
+    message: 'login success',
+    status: 'success'
+  });
+}
 );
 
 
-function clientAuthenticate(req, res, next) {
-    
-    connection.query(
-      `SELECT * FROM users where UserName='${req.body.username}' `,
-      async (err, results) => {
-        if(err){
-          console.log(err);
-          res.status(500).json(err);
-        }
-        else if (results.length !== 0) {
-          const isMatch = await bcrypt.compare(req.body.password, results[0].Password_Hash);
-          if (isMatch) {
-            req.session.user = { username: req.body.username };
-           // console.log("request-session-user :",req.session)
-            next();
-          } else {
-            console.log("Password does not match");
-            res.status(401).json({ status: 'Unauthorized', message: 'Password does not match' });
-          }
-        } else {
-          console.log("User does not exist");
-          res.status(401).json({ status: 'Unauthorized', message: 'User does not exist' });
-        }
-       
-      }
-    );
-  
-   
-  }
-  module.exports = router;
+
+module.exports = router;

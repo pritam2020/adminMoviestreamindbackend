@@ -18,6 +18,7 @@ const login = require("./Routers/authentication/login");
 const logout = require("./Routers/authentication/logout");
 const signup = require("./Routers/authentication/signup");
 const account = require("./Routers/account");
+const googleauthRouter = require("./Routers/authentication/googleauthRouter");
 const videoStreamingRouter = require("./Routers/streaming/videoStreamingRouter")
 const https =require("https");
 const express = require("express");
@@ -32,7 +33,8 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const useragent = require('express-useragent');
 const mysql = require("mysql2");
-const connection=require("./utils/DB_connection.js")
+const connection=require("./utils/DB_connection.js");
+const passport = require("passport");
 
 dotenv.config();
 var count = 0;
@@ -106,12 +108,13 @@ app.use(session({
     cookie: { secure:true, sameSite:'none'}
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use("/protected-route", (req, res, next) => {
-  if (!req.session.user) {
-
+  if ( !req.session.passport && !req.session.passport.user) {
     return res.status(401).end("You must be logged in to access this resource");
   }
-
+  console.log("request",req.user?req.user:"request.user not found");
   next();
 });
 app.use("/protected-route/views/", express.static(path.join(__dirname, "Views")));
@@ -139,13 +142,15 @@ app.use("/protected-route/moviedetails/fantasy", fantasyRouter);
 app.use("/protected-route/moviedetails", streamingRouter);
 app.use("/protected-route/moviedetails/search", search);
 app.use("/clientlogin",login);
+app.use("/clientgooglelogin",googleauthRouter);
 app.use("/clientsignup",signup);
 app.use("/protected-route/clientlogout",logout);
 app.use("/protected-route/clientaccount",account);
 app.get("/checksession",(req,res)=>{
-  console.log("sessioncheck-endpoint :",req.session.user)
-  if(req.session.user){
-    console.log("client-loggedin")
+  console.log("sessioncheck-endpoint :",req.session)
+  if(req.session.passport && req.session.passport.user){
+    console.log("client-loggedin");
+    console.log("client-request",req.session)
     res.status(200).json({loggedin:true});
   }else{
     console.log("client-not-loggedin")
