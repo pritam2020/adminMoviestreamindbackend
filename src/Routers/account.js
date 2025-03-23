@@ -22,9 +22,9 @@ router.get("/",(req, res) => {
 
 function clientInfo(req, res) {
     console.log("in clientAuthenticate middleware");
-   // console.log(req.body);
+   console.log(req.user);
     connection.query(
-      `SELECT * FROM users where UserName='${req.session.passport.user.username}' `,
+      `SELECT * FROM users where UserName='${req.user.username}' `,
       async (err, results) => {
         if(err){
           console.log(err);

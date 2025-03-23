@@ -20,3 +20,7 @@ ecosystem.config.js
 nohup.output
 nginx-configuration.txt
 google-credentials.json
+.prettierrc.json
+.prettierignore
+data.js
+eslint.config.mjs

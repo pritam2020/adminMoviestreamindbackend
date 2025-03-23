@@ -1,6 +1,6 @@
-const connection = require("../src/utils/DB_connection");
+const connection = require('../utils/DB_connection');
 const bcrypt = require('bcryptjs');
-const userModel = require("../src/models/user.model");
+const userModel = require('../models/user.model');
 
 // module.exports.createUser= async(username, password, FirstName, LastName, Email, Country, PinCode, City) =>{
 
@@ -35,24 +35,24 @@ const userModel = require("../src/models/user.model");
 // }
 
 module.exports.createUser = async (username, password, FirstName, LastName, Email, Country, PinCode, City) => {
-    try {
-        const result = await userModel.create({
-            UserName: username,
-            Password_Hash: password,
-            FirstName: FirstName,
-            LastName: LastName,
-            EmailId: Email,
-            County: Country,
-            PinCode: PinCode,
-            City: City
-        });
+	try {
+		const result = await userModel.create({
+			UserName: username,
+			Password_Hash: password,
+			FirstName: FirstName,
+			LastName: LastName,
+			EmailId: Email,
+			County: Country,
+			PinCode: PinCode,
+			City: City,
+		});
 
-        return await userModel.findOne({ where: { UserName: username } });
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
+		return await userModel.findOne({ where: { UserName: username } });
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+};
 // module.exports.userExist = async (username, password) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query(
@@ -82,11 +82,10 @@ module.exports.createUser = async (username, password, FirstName, LastName, Emai
 // }
 
 module.exports.getUserByUsername = async (username) => {
-    try {
-        return await userModel.findOne({ where: { UserName: username } });
-    }
-    catch (err) {
-        console.log("in catch of user servics",err);
-        throw err;
-    }
-}
+	try {
+		return await userModel.findOne({ where: { UserName: username } });
+	} catch (err) {
+		console.log('in catch of user servics', err);
+		throw err;
+	}
+};
