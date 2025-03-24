@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 Router.get('/:moviename', (req, res) => {
-	const videoPath = path.join(__dirname, '..', '..', 'CompressedMovieStock', req.params.moviename);
+	const videoPath = path.join(__dirname, '..', '..',"..", 'CompressedMovieStock', req.params.moviename);
 	const stat = fs.statSync(videoPath); // Get file size
 	const fileSize = stat.size;
 
