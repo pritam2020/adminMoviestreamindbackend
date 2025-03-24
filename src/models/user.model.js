@@ -40,7 +40,7 @@ const user = connection.define(
 			type: sequelize.STRING,
 			allowNull: true,
 		},
-		AccountCreationDate: {
+		AccoutCreationDate: {
 			type: sequelize.DATE,
 			defaultValue: sequelize.NOW,
 			allowNull: false,
