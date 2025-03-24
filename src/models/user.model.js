@@ -28,7 +28,7 @@ const user = connection.define(
 			allowNull: false,
 			unique: true,
 		},
-		Country: {
+		County: {
 			type: sequelize.STRING,
 			allowNull: true,
 		},
