@@ -28,7 +28,7 @@ module.exports.googlestrategy = new GoogleStrategy(
 	{
 		clientID: process.env['GOOGLE_CLIENT_ID'],
 		clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-		callbackURL: '/user/clientgooglelogin/oauth2/redirect/google',
+		callbackURL: 'https://movies4unow.online:3002/user/clientgooglelogin/oauth2/redirect/google',
 		scope: ['profile', 'email'],
 	},
 	async function verify(issuer, profile, cb) {
